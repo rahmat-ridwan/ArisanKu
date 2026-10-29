@@ -1,0 +1,2303 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>ArisanKu</title>
+
+    <!-- PWA META TAGS -->
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="description" content="ArisanKu - Aplikasi Data Report & Pencairan">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ArisanKu">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="ArisanKu">
+
+    <!-- ICON APLIKASI -->
+    <link rel="icon" type="image/png" href="https://drive.google.com/thumbnail?id=10kGraJ1xLm9g2BMGAIWemhfhen34cC70&sz=w300">
+    <link rel="apple-touch-icon" href="https://drive.google.com/thumbnail?id=10kGraJ1xLm9g2BMGAIWemhfhen34cC70&sz=w300">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://drive.google.com/thumbnail?id=10kGraJ1xLm9g2BMGAIWemhfhen34cC70&sz=w300">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://drive.google.com/thumbnail?id=10kGraJ1xLm9g2BMGAIWemhfhen34cC70&sz=w300">
+    <link rel="apple-touch-icon" sizes="167x167" href="https://drive.google.com/thumbnail?id=10kGraJ1xLm9g2BMGAIWemhfhen34cC70&sz=w300">
+
+    <link rel="manifest" id="pwa-manifest">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --safe-area-inset-top: env(safe-area-inset-top);
+            --safe-area-inset-bottom: env(safe-area-inset-bottom);
+            --safe-area-inset-left: env(safe-area-inset-left);
+            --safe-area-inset-right: env(safe-area-inset-right);
+            
+            --table-primary: #4f46e5;
+            --table-primary-light: #6366f1;
+            --table-primary-dark: #4338ca;
+            --table-accent: #06b6d4;
+            --table-bg-odd: #ffffff;
+            --table-bg-even: #f8fafc;
+            --table-hover: #eef2ff;
+            --table-border: #e2e8f0;
+            --table-text: #1e293b;
+            --table-text-muted: #64748b;
+        }
+        
+        html, body {
+            height: 100%;
+            -webkit-text-size-adjust: 100%;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+            padding: 0;
+            margin: 0;
+            min-height: 100vh;
+            min-height: -webkit-fill-available;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* ============================================ */
+        /* SPLASH / LOADING SCREEN PWA */
+        /* ============================================ */
+        #pwa-splash {
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #4f46e5;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        #pwa-splash.hide {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        #pwa-splash img {
+            width: 55vw;
+            max-width: 260px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .splash-loader {
+            margin-top: 28px;
+            width: 140px;
+            height: 3px;
+            border-radius: 2px;
+            background: rgba(255, 255, 255, 0.25);
+            overflow: hidden;
+        }
+
+        .splash-loader::after {
+            content: '';
+            display: block;
+            width: 40%;
+            height: 100%;
+            background: #fff;
+            animation: splashLoad 1.1s ease-in-out infinite;
+        }
+
+        @keyframes splashLoad {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(350%); }
+        }
+
+        .safe-area-top {
+            padding-top: var(--safe-area-inset-top);
+            background-color: #f8f9fa;
+        }
+        
+        .safe-area-bottom {
+            padding-bottom: var(--safe-area-inset-bottom);
+        }
+        
+        .main-container {
+            flex: 1;
+            width: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* CAROUSEL STYLES */
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            height: 30vh;
+            min-height: 150px;
+            overflow: hidden;
+            margin-bottom: 5px;
+            background: #000;
+        }
+        
+        .carousel-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            filter: blur(15px);
+            transform: scale(1.1);
+            z-index: 1;
+            transition: background-image 0.5s ease;
+            opacity: 0.7;
+        }
+        
+        .carousel-slides {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            z-index: 2;
+        }
+        
+        .carousel-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+        
+        .carousel-slide.active {
+            opacity: 1;
+        }
+        
+        .carousel-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+        }
+        
+        .carousel-controls {
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 3;
+            gap: 10px;
+        }
+        
+        .carousel-btn {
+            background: rgba(255, 255, 255, 0.8);
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 16px;
+            color: #333;
+            transition: all 0.3s ease;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .carousel-btn:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: scale(1.1);
+        }
+        
+        .carousel-indicators {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .carousel-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .carousel-indicator.active {
+            background: white;
+            transform: scale(1.2);
+        }
+        
+        .carousel-loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 1.2rem;
+            z-index: 4;
+        }
+        
+        .container {
+            background-color: white;
+            margin: 5px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            padding: 12px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container h2 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-align: center;
+            letter-spacing: 0.5px;
+            position: relative;
+            padding-bottom: 8px;
+        }
+        
+        .container h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--table-primary), var(--table-accent));
+            border-radius: 2px;
+        }
+        
+        .table-wrapper {
+            position: relative;
+            margin-top: 22px;
+            padding: 6px;
+        }
+        
+        .capybara {
+            position: absolute;
+            width: 55px;
+            height: 55px;
+            z-index: 20;
+            pointer-events: none;
+            filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.15));
+            animation: capybaraBob 3s ease-in-out infinite;
+        }
+        
+        @keyframes capybaraBob {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-4px) rotate(-2deg); }
+        }
+        
+        .capybara-2 {
+            right: -8px;
+            bottom: -12px;
+            animation-delay: 0.5s;
+        }
+        
+        @keyframes capybaraBobFlip {
+            0%, 100% { transform: scaleX(-1) translateY(0) rotate(0deg); }
+            50% { transform: scaleX(-1) translateY(-4px) rotate(2deg); }
+        }
+        
+        .capybara-2 {
+            animation: capybaraBobFlip 3s ease-in-out infinite;
+            animation-delay: 0.5s;
+        }
+        
+        .capybara-peek {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            top: -28px;
+            left: -5px;
+            z-index: 20;
+            pointer-events: none;
+            filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.15));
+            animation: capybaraPeekTopLeft 4s ease-in-out infinite;
+        }
+        
+        @keyframes capybaraPeekTopLeft {
+            0%, 100% { transform: translateY(0) rotate(-5deg); }
+            50% { transform: translateY(-6px) rotate(0deg); }
+        }
+        
+        .capybara-dance {
+            position: absolute;
+            width: 55px;
+            height: 55px;
+            top: -32px;
+            right: -5px;
+            z-index: 22;
+            pointer-events: none;
+            filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.2));
+            animation: capybaraDance 0.8s ease-in-out infinite;
+            transform-origin: center bottom;
+        }
+        
+        @keyframes capybaraDance {
+            0% { transform: rotate(-10deg) translateY(0) scale(1); }
+            25% { transform: rotate(0deg) translateY(-8px) scale(1.05); }
+            50% { transform: rotate(10deg) translateY(0) scale(1); }
+            75% { transform: rotate(0deg) translateY(-8px) scale(1.05); }
+            100% { transform: rotate(-10deg) translateY(0) scale(1); }
+        }
+        
+        .capybara-dance .foot-left {
+            transform-origin: center;
+            animation: footDanceLeft 0.4s ease-in-out infinite alternate;
+        }
+        
+        .capybara-dance .foot-right {
+            transform-origin: center;
+            animation: footDanceRight 0.4s ease-in-out infinite alternate;
+        }
+        
+        @keyframes footDanceLeft {
+            from { transform: translateY(0) rotate(-5deg); }
+            to { transform: translateY(-3px) rotate(5deg); }
+        }
+        
+        @keyframes footDanceRight {
+            from { transform: translateY(-3px) rotate(5deg); }
+            to { transform: translateY(0) rotate(-5deg); }
+        }
+        
+        .capybara-dance .arm-left {
+            transform-origin: top center;
+            animation: armDanceLeft 0.5s ease-in-out infinite alternate;
+        }
+        
+        .capybara-dance .arm-right {
+            transform-origin: top center;
+            animation: armDanceRight 0.5s ease-in-out infinite alternate;
+        }
+        
+        @keyframes armDanceLeft {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(-30deg); }
+        }
+        
+        @keyframes armDanceRight {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(30deg); }
+        }
+        
+        .music-note {
+            position: absolute;
+            font-size: 1rem;
+            color: #ec4899;
+            font-weight: 700;
+            pointer-events: none;
+            z-index: 23;
+            opacity: 0;
+            text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
+        }
+        
+        .music-note-1 {
+            top: -38px;
+            right: 30px;
+            animation: musicNote1 2.5s ease-in-out infinite;
+        }
+        
+        .music-note-2 {
+            top: -45px;
+            right: 5px;
+            animation: musicNote2 2.5s ease-in-out infinite 0.5s;
+        }
+        
+        .music-note-3 {
+            top: -40px;
+            right: -15px;
+            animation: musicNote3 2.5s ease-in-out infinite 1s;
+        }
+        
+        @keyframes musicNote1 {
+            0%, 100% { opacity: 0; transform: translateY(0) rotate(-10deg); }
+            50% { opacity: 1; transform: translateY(-15px) rotate(10deg); }
+        }
+        
+        @keyframes musicNote2 {
+            0%, 100% { opacity: 0; transform: translateY(0) rotate(10deg); }
+            50% { opacity: 1; transform: translateY(-20px) rotate(-10deg); }
+        }
+        
+        @keyframes musicNote3 {
+            0%, 100% { opacity: 0; transform: translateY(0) rotate(-5deg); }
+            50% { opacity: 1; transform: translateY(-18px) rotate(15deg); }
+        }
+        
+        .capybara-side {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            top: 50%;
+            right: -20px;
+            transform: translateY(-50%) rotate(15deg);
+            z-index: 20;
+            pointer-events: none;
+            filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.15));
+            animation: capybaraSide 5s ease-in-out infinite;
+            opacity: 0.9;
+        }
+        
+        @keyframes capybaraSide {
+            0%, 100% { transform: translateY(-50%) rotate(15deg) scale(1); }
+            50% { transform: translateY(-55%) rotate(20deg) scale(1.05); }
+        }
+        
+        .capybara-bubble {
+            position: absolute;
+            top: -8px;
+            left: 55px;
+            background: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: #4f46e5;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            border: 2px solid #e0e7ff;
+            white-space: nowrap;
+            animation: capybaraBubble 3s ease-in-out infinite;
+            z-index: 21;
+            pointer-events: none;
+        }
+        
+        .capybara-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 15px;
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 8px solid white;
+        }
+        
+        @keyframes capybaraBubble {
+            0%, 100% { transform: scale(1) translateY(0); opacity: 1; }
+            50% { transform: scale(1.05) translateY(-3px); opacity: 0.95; }
+        }
+        
+        .spreadsheet-container {
+            border: 2px dashed #c7d2fe;
+            border-radius: 12px;
+            min-height: 100px;
+            width: 100%;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.1);
+            background: white;
+            transition: all 0.3s ease;
+        }
+        
+        .spreadsheet-container:hover {
+            border-color: #a5b4fc;
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.15);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            table-layout: fixed;
+            min-width: 100%;
+        }
+        
+        th {
+            background: linear-gradient(135deg, var(--table-primary) 0%, var(--table-primary-dark) 100%);
+            color: white;
+            font-weight: 700;
+            font-size: 0.62rem;
+            letter-spacing: 0;
+            text-transform: uppercase;
+            padding: 7px 2px;
+            text-align: center;
+            border-bottom: none;
+            position: relative;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            text-overflow: clip;
+            vertical-align: middle;
+            word-break: break-word;
+            line-height: 1.15;
+        }
+        
+        th::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+        }
+        
+        td {
+            padding: 6px 2px;
+            text-align: center;
+            border-bottom: 1px solid var(--table-border);
+            font-size: 0.6rem;
+            line-height: 1.2;
+            box-sizing: border-box;
+            color: var(--table-text);
+            background-color: var(--table-bg-odd);
+            transition: all 0.2s ease;
+            overflow: hidden;
+            text-overflow: clip;
+            white-space: nowrap;
+            vertical-align: middle;
+            word-break: break-word;
+        }
+        
+        tbody tr:nth-child(even) td {
+            background-color: var(--table-bg-even);
+        }
+        
+        tbody tr:hover td {
+            background-color: var(--table-hover) !important;
+            color: var(--table-primary-dark);
+        }
+        
+        th:first-child, td:first-child {
+            z-index: 10;
+            border-right: 2px solid var(--table-border);
+            font-weight: 700;
+            color: var(--table-primary-dark);
+            width: 16%;
+            text-align: center;
+        }
+        
+        th:first-child {
+            background: linear-gradient(135deg, var(--table-primary-dark) 0%, #312e81 100%);
+            color: white !important;
+            z-index: 15;
+        }
+        
+        td:first-child {
+            background-color: #eef2ff;
+            box-shadow: 3px 0 6px -3px rgba(79, 70, 229, 0.2);
+        }
+        
+        tbody tr:nth-child(even) td:first-child {
+            background-color: #e0e7ff;
+        }
+        
+        tbody tr:hover td:first-child {
+            background-color: var(--table-hover) !important;
+        }
+        
+        th:nth-child(2), td:nth-child(2) {
+            width: 22%;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        td:nth-child(n+3) {
+            text-align: center;
+            font-variant-numeric: tabular-nums;
+        }
+        
+        th:nth-child(n+3) {
+            text-align: center;
+        }
+        
+        td[data-merged="true"] {
+            background-color: #fef3c7 !important;
+            font-weight: 700;
+            color: #92400e !important;
+            vertical-align: middle;
+            border-bottom: 2px solid #fbbf24;
+        }
+        
+        tbody tr:hover td[data-merged="true"] {
+            background-color: #fde68a !important;
+            color: #78350f !important;
+        }
+        
+        thead th {
+            position: sticky;
+            top: 0;
+            z-index: 5;
+        }
+        
+        thead th:first-child {
+            z-index: 15;
+        }
+        
+        thead tr:first-child th:first-child {
+            border-top-left-radius: 10px;
+        }
+        
+        thead tr:first-child th:last-child {
+            border-top-right-radius: 10px;
+        }
+        
+        tbody tr:last-child td:first-child {
+            border-bottom-left-radius: 10px;
+        }
+        
+        tbody tr:last-child td:last-child {
+            border-bottom-right-radius: 10px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px 10px;
+            color: #7f8c8d;
+            font-size: 0.8rem;
+        }
+        
+        .error {
+            background-color: #ffeaa7;
+            color: #d63031;
+            padding: 10px;
+            border-radius: 6px;
+            margin: 8px 0;
+            font-size: 0.75rem;
+        }
+        
+        .scroll-hint {
+            display: none;
+        }
+        
+        .button-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 25px;
+            margin: 40px 0 0;
+            flex-wrap: nowrap;
+            padding-top: 12px;
+            border-top: 1px solid #f0f0f0;
+            width: 100%;
+            position: relative;
+        }
+        
+        .depo-button {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            background: transparent;
+            color: white;
+            text-decoration: none;
+            padding: 0;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            transition: all 0.4s ease;
+            position: relative;
+            flex: 0 0 auto;
+            min-width: 90px;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .depo-button .capybara-btn-svg {
+            width: 80px;
+            height: 80px;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+            transition: all 0.3s ease;
+            animation: capybaraMakanBob 2.5s ease-in-out infinite;
+        }
+        
+        @keyframes capybaraMakanBob {
+            0%, 100% { transform: translateY(0) rotate(-2deg); }
+            50% { transform: translateY(-3px) rotate(2deg); }
+        }
+        
+        .depo-button .capybara-btn-label {
+            background: linear-gradient(135deg, #FF9800, #FF5722);
+            color: white;
+            padding: 5px 14px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.78rem;
+            box-shadow: 0 3px 10px rgba(255, 87, 34, 0.4);
+            margin-top: -8px;
+            z-index: 2;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            white-space: nowrap;
+            transition: all 0.3s ease;
+        }
+        
+        .depo-button:hover .capybara-btn-svg {
+            transform: translateY(-5px) scale(1.1);
+            animation: none;
+        }
+        
+        .depo-button:hover .capybara-btn-label {
+            background: linear-gradient(135deg, #FF5722, #FF9800);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 87, 34, 0.6);
+        }
+        
+        .depo-button .mulut-makan {
+            transform-origin: center;
+            animation: mulutMakan 0.6s ease-in-out infinite;
+        }
+        
+        @keyframes mulutMakan {
+            0%, 100% { transform: scaleY(1); }
+            50% { transform: scaleY(0.6); }
+        }
+        
+        .depo-button .daun-makan {
+            transform-origin: center bottom;
+            animation: daunGoyang 1.2s ease-in-out infinite;
+        }
+        
+        @keyframes daunGoyang {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+        
+        .pencairan-button {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            background: transparent;
+            color: white;
+            text-decoration: none;
+            padding: 0;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            transition: all 0.4s ease;
+            position: relative;
+            flex: 0 0 auto;
+            min-width: 90px;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .pencairan-button .capybara-btn-svg {
+            width: 80px;
+            height: 80px;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+            transition: all 0.3s ease;
+            animation: capybaraBerak 2s ease-in-out infinite;
+        }
+        
+        @keyframes capybaraBerak {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-4px) rotate(-1deg); }
+        }
+        
+        .pencairan-button .capybara-btn-label {
+            background: linear-gradient(135deg, #2196F3, #1976D2);
+            color: white;
+            padding: 5px 14px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.78rem;
+            box-shadow: 0 3px 10px rgba(33, 150, 243, 0.4);
+            margin-top: -8px;
+            z-index: 2;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            white-space: nowrap;
+            transition: all 0.3s ease;
+        }
+        
+        .pencairan-button:hover .capybara-btn-svg {
+            transform: translateY(-5px) scale(1.1);
+            animation: none;
+        }
+        
+        .pencairan-button:hover .capybara-btn-label {
+            background: linear-gradient(135deg, #1976D2, #2196F3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.6);
+        }
+        
+        .pencairan-button .pup-keluar {
+            transform-origin: center top;
+            animation: pupKeluar 2s ease-in-out infinite;
+        }
+        
+        @keyframes pupKeluar {
+            0%, 60%, 100% { 
+                transform: translateY(0) scale(0.5); 
+                opacity: 0.3;
+            }
+            80% { 
+                transform: translateY(6px) scale(1); 
+                opacity: 1;
+            }
+        }
+        
+        .pencairan-button .pus-effect {
+            animation: pusBlink 2s ease-in-out infinite;
+        }
+        
+        @keyframes pusBlink {
+            0%, 70%, 100% { opacity: 0; }
+            80%, 90% { opacity: 1; }
+        }
+        
+        .capybara-sleep {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: -60px;
+            width: 50px;
+            height: 50px;
+            z-index: 25;
+            pointer-events: none;
+            filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.2));
+            animation: capybaraSleeping 4s ease-in-out infinite;
+        }
+        
+        @keyframes capybaraSleeping {
+            0%, 100% { transform: translateX(-50%) translateY(0) rotate(0deg); }
+            50% { transform: translateX(-50%) translateY(-4px) rotate(-3deg); }
+        }
+        
+        .sleep-z {
+            position: absolute;
+            font-size: 0.9rem;
+            color: #6366f1;
+            font-weight: 700;
+            pointer-events: none;
+            z-index: 26;
+            opacity: 0;
+            text-shadow: 0 1px 3px rgba(255, 255, 255, 0.9);
+        }
+        
+        .sleep-z-1 {
+            top: -75px;
+            left: 50%;
+            transform: translateX(-50%) translateX(10px);
+            animation: sleepZ1 3s ease-in-out infinite;
+        }
+        
+        .sleep-z-2 {
+            top: -80px;
+            left: 50%;
+            transform: translateX(-50%) translateX(20px);
+            animation: sleepZ2 3s ease-in-out infinite 1s;
+        }
+        
+        .sleep-z-3 {
+            top: -85px;
+            left: 50%;
+            transform: translateX(-50%) translateX(28px);
+            animation: sleepZ3 3s ease-in-out infinite 2s;
+        }
+        
+        @keyframes sleepZ1 {
+            0%, 100% { opacity: 0; transform: translateX(-50%) translateX(5px) translateY(0) scale(0.8); }
+            50% { opacity: 1; transform: translateX(-50%) translateX(15px) translateY(-10px) scale(1); }
+        }
+        
+        @keyframes sleepZ2 {
+            0%, 100% { opacity: 0; transform: translateX(-50%) translateX(15px) translateY(0) scale(0.8); }
+            50% { opacity: 1; transform: translateX(-50%) translateX(25px) translateY(-12px) scale(1); }
+        }
+        
+        @keyframes sleepZ3 {
+            0%, 100% { opacity: 0; transform: translateX(-50%) translateX(25px) translateY(0) scale(0.8); }
+            50% { opacity: 1; transform: translateX(-50%) translateX(35px) translateY(-14px) scale(1); }
+        }
+        
+        .drool {
+            position: absolute;
+            width: 4px;
+            height: 10px;
+            background: linear-gradient(to bottom, #93c5fd, #bfdbfe);
+            border-radius: 0 0 50% 50%;
+            top: 32px;
+            left: 30px;
+            z-index: 24;
+            opacity: 0.8;
+            animation: droolDrip 2s ease-in-out infinite;
+            filter: drop-shadow(0 1px 2px rgba(59, 130, 246, 0.4));
+        }
+        
+        @keyframes droolDrip {
+            0%, 100% { height: 8px; opacity: 0.6; }
+            50% { height: 14px; opacity: 1; }
+        }
+        
+        .password-popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.3s ease;
+            padding: 15px;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .password-popup.active {
+            display: flex;
+        }
+        
+        .password-container {
+            background: linear-gradient(135deg, #00b09b, #96c93d);
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 
+                0 25px 50px rgba(0, 176, 155, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.1),
+                0 0 50px rgba(150, 201, 61, 0.5);
+            transform: scale(0.9) translateY(20px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .password-popup.active .password-container {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+        
+        .password-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+        
+        .password-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .password-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .password-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .password-icon i {
+            font-size: 2.5rem;
+            color: white;
+            filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.3));
+        }
+        
+        .password-header h3 {
+            color: white;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .password-header p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+        
+        .password-form {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .form-group label {
+            font-weight: 600;
+            color: white;
+            font-size: 1rem;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        
+        .form-group input {
+            padding: 15px 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 
+                0 0 0 3px rgba(255, 255, 255, 0.2),
+                0 8px 25px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .password-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .password-submit {
+            flex: 2;
+            background: linear-gradient(135deg, #ffffff, #f8f9fa);
+            color: #00b09b;
+            border: none;
+            padding: 16px 25px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .password-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .password-cancel {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 16px 25px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .password-cancel:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .password-message {
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            text-align: center;
+            margin-top: 15px;
+            display: none;
+        }
+        
+        .password-error {
+            background: rgba(231, 76, 60, 0.9);
+            color: white;
+        }
+        
+        .password-error.active {
+            display: block;
+        }
+        
+        .password-success {
+            background: rgba(46, 204, 113, 0.9);
+            color: white;
+        }
+        
+        .password-success.active {
+            display: block;
+        }
+        
+        .close-popup {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            z-index: 3;
+        }
+        
+        .close-popup:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg) scale(1.1);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 10px 8px;
+            border-top: 1px solid #e0e0e0;
+            color: #7f8c8d;
+            font-size: 0.7rem;
+            background: white;
+            margin-top: auto;
+        }
+        
+        @media (min-width: 1200px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+                border-radius: 12px;
+            }
+            
+            .container h2 {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+            }
+            
+            th, td {
+                padding: 10px 6px;
+                font-size: 0.8rem;
+            }
+            
+            .capybara {
+                width: 65px;
+                height: 65px;
+            }
+            
+            .capybara-peek {
+                width: 58px;
+                height: 58px;
+                top: -32px;
+                left: -8px;
+            }
+            
+            .capybara-dance {
+                width: 65px;
+                height: 65px;
+                top: -38px;
+                right: -8px;
+            }
+            
+            .capybara-sleep {
+                width: 60px;
+                height: 60px;
+                top: -70px;
+            }
+            
+            .drool {
+                top: 38px;
+                left: 36px;
+            }
+            
+            .depo-button .capybara-btn-svg,
+            .pencairan-button .capybara-btn-svg {
+                width: 95px;
+                height: 95px;
+            }
+            
+            .depo-button .capybara-btn-label,
+            .pencairan-button .capybara-btn-label {
+                font-size: 0.85rem;
+                padding: 6px 16px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .carousel-container {
+                height: 28vh;
+                min-height: 130px;
+                margin-bottom: 3px;
+            }
+            
+            .carousel-btn {
+                width: 30px;
+                height: 30px;
+                font-size: 14px;
+            }
+            
+            .container {
+                margin: 5px;
+                padding: 8px;
+                width: calc(100% - 10px);
+            }
+            
+            .container h2 {
+                font-size: 1rem;
+                margin-bottom: 8px;
+            }
+            
+            .spreadsheet-container {
+                overflow: hidden;
+                width: 100%;
+            }
+            
+            table {
+                width: 100%;
+                table-layout: fixed;
+                min-width: 100%;
+            }
+            
+            th, td {
+                padding: 6px 2px;
+                font-size: 0.52rem;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: clip;
+                text-align: center;
+                word-break: break-word;
+                line-height: 1.15;
+            }
+            
+            th:first-child,
+            td:first-child {
+                width: 16%;
+                font-size: 0.54rem;
+            }
+            
+            th:nth-child(2),
+            td:nth-child(2) {
+                width: 22%;
+                font-weight: 600;
+                font-size: 0.52rem;
+            }
+            
+            th:nth-child(n+3),
+            td:nth-child(n+3) {
+                width: 15.5%;
+                font-size: 0.52rem;
+            }
+            
+            .button-container {
+                flex-direction: row;
+                justify-content: center;
+                align-items: flex-end;
+                gap: 15px;
+                margin: 35px 0 0;
+                flex-wrap: nowrap;
+            }
+            
+            .depo-button,
+            .pencairan-button {
+                min-width: 70px;
+                flex: 0 0 auto;
+            }
+            
+            .depo-button .capybara-btn-svg,
+            .pencairan-button .capybara-btn-svg {
+                width: 65px;
+                height: 65px;
+            }
+            
+            .depo-button .capybara-btn-label,
+            .pencairan-button .capybara-btn-label {
+                font-size: 0.65rem;
+                padding: 4px 10px;
+                margin-top: -6px;
+                border-width: 1.5px;
+            }
+            
+            .password-container {
+                padding: 25px 20px;
+                margin: 15px;
+                border-radius: 15px;
+            }
+            
+            .password-header h3 {
+                font-size: 1.4rem;
+            }
+            
+            .password-header p {
+                font-size: 0.9rem;
+            }
+            
+            .password-icon {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .password-icon i {
+                font-size: 1.8rem;
+            }
+            
+            .password-actions {
+                flex-direction: column;
+            }
+            
+            .capybara {
+                width: 42px;
+                height: 42px;
+            }
+            
+            .capybara-peek {
+                width: 40px;
+                height: 40px;
+                top: -24px;
+                left: -3px;
+            }
+            
+            .capybara-dance {
+                width: 44px;
+                height: 44px;
+                top: -28px;
+                right: -3px;
+            }
+            
+            .capybara-side {
+                width: 32px;
+                height: 32px;
+                right: -15px;
+            }
+            
+            .capybara-bubble {
+                font-size: 0.55rem;
+                padding: 3px 8px;
+                left: 45px;
+                top: -5px;
+            }
+            
+            .table-wrapper {
+                margin-top: 18px;
+            }
+            
+            .music-note {
+                font-size: 0.85rem;
+            }
+            
+            .capybara-sleep {
+                width: 42px;
+                height: 42px;
+                top: -50px;
+            }
+            
+            .drool {
+                top: 26px;
+                left: 25px;
+                height: 8px;
+            }
+            
+            .sleep-z-1 { font-size: 0.8rem; top: -65px; }
+            .sleep-z-2 { font-size: 0.8rem; top: -70px; }
+            .sleep-z-3 { font-size: 0.8rem; top: -75px; }
+        }
+        
+        @media (max-width: 480px) {
+            .carousel-container {
+                height: 25vh;
+                min-height: 110px;
+            }
+            
+            .carousel-btn {
+                width: 25px;
+                height: 25px;
+                font-size: 12px;
+            }
+            
+            .container {
+                margin: 3px;
+                padding: 4px;
+                width: calc(100% - 6px);
+            }
+            
+            .container h2 {
+                font-size: 0.9rem;
+                margin-bottom: 6px;
+            }
+            
+            .spreadsheet-container {
+                overflow: hidden;
+                width: 100%;
+                border-radius: 8px;
+            }
+            
+            table {
+                width: 100%;
+                table-layout: fixed;
+                min-width: 100%;
+            }
+            
+            th, td {
+                padding: 5px 1px;
+                font-size: 0.45rem;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: clip;
+                line-height: 1.1;
+                text-align: center;
+                word-break: break-word;
+            }
+            
+            th:first-child,
+            td:first-child {
+                width: 15%;
+                font-size: 0.47rem;
+            }
+            
+            th:nth-child(2),
+            td:nth-child(2) {
+                width: 22%;
+                font-size: 0.45rem;
+            }
+            
+            th:nth-child(n+3),
+            td:nth-child(n+3) {
+                width: 15.75%;
+                font-size: 0.45rem;
+            }
+            
+            .button-container {
+                gap: 12px;
+                margin: 30px 0 0;
+                flex-wrap: nowrap;
+                align-items: flex-end;
+            }
+            
+            .depo-button,
+            .pencairan-button {
+                min-width: 60px;
+                flex: 0 0 auto;
+            }
+            
+            .depo-button .capybara-btn-svg,
+            .pencairan-button .capybara-btn-svg {
+                width: 58px;
+                height: 58px;
+            }
+            
+            .depo-button .capybara-btn-label,
+            .pencairan-button .capybara-btn-label {
+                font-size: 0.58rem;
+                padding: 3px 8px;
+                margin-top: -5px;
+                border-width: 1.5px;
+                letter-spacing: 0;
+            }
+            
+            .password-container {
+                padding: 20px 15px;
+            }
+            
+            .password-header h3 {
+                font-size: 1.2rem;
+                margin-bottom: 8px;
+            }
+            
+            .password-header p {
+                font-size: 0.8rem;
+            }
+            
+            .password-icon {
+                width: 50px;
+                height: 50px;
+                margin-bottom: 15px;
+            }
+            
+            .password-icon i {
+                font-size: 1.5rem;
+            }
+            
+            .form-group input {
+                padding: 12px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .password-submit,
+            .password-cancel {
+                padding: 13px 20px;
+                font-size: 0.95rem;
+            }
+            
+            .capybara {
+                width: 36px;
+                height: 36px;
+            }
+            
+            .capybara-peek {
+                width: 34px;
+                height: 34px;
+                top: -20px;
+                left: -2px;
+            }
+            
+            .capybara-dance {
+                width: 38px;
+                height: 38px;
+                top: -22px;
+                right: -2px;
+            }
+            
+            .capybara-side {
+                display: none;
+            }
+            
+            .capybara-bubble {
+                font-size: 0.5rem;
+                padding: 2px 6px;
+                left: 38px;
+                top: -3px;
+            }
+            
+            .table-wrapper {
+                margin-top: 15px;
+            }
+            
+            .music-note {
+                font-size: 0.75rem;
+            }
+            
+            .music-note-3 {
+                display: none;
+            }
+            
+            .capybara-sleep {
+                width: 36px;
+                height: 36px;
+                top: -44px;
+            }
+            
+            .drool {
+                top: 22px;
+                left: 21px;
+                height: 7px;
+                width: 3px;
+            }
+            
+            .sleep-z-1 { font-size: 0.7rem; top: -58px; }
+            .sleep-z-2 { font-size: 0.7rem; top: -62px; }
+            .sleep-z-3 { display: none; }
+        }
+        
+        @media (max-width: 360px) {
+            th, td {
+                padding: 4px 1px;
+                font-size: 0.4rem;
+                line-height: 1.05;
+                text-align: center;
+                word-break: break-word;
+            }
+            
+            th:first-child,
+            td:first-child {
+                width: 15%;
+                font-size: 0.42rem;
+            }
+            
+            th:nth-child(2),
+            td:nth-child(2) {
+                width: 22%;
+                font-size: 0.4rem;
+            }
+            
+            th:nth-child(n+3),
+            td:nth-child(n+3) {
+                width: 15.75%;
+                font-size: 0.4rem;
+            }
+            
+            .button-container {
+                gap: 8px;
+                margin: 28px 0 0;
+            }
+            
+            .depo-button,
+            .pencairan-button {
+                min-width: 55px;
+            }
+            
+            .depo-button .capybara-btn-svg,
+            .pencairan-button .capybara-btn-svg {
+                width: 52px;
+                height: 52px;
+            }
+            
+            .depo-button .capybara-btn-label,
+            .pencairan-button .capybara-btn-label {
+                font-size: 0.52rem;
+                padding: 2px 7px;
+                margin-top: -4px;
+            }
+            
+            .capybara-sleep {
+                width: 32px;
+                height: 32px;
+                top: -40px;
+            }
+            
+            .drool {
+                top: 20px;
+                left: 19px;
+                height: 6px;
+                width: 3px;
+            }
+            
+            .sleep-z-1 { font-size: 0.65rem; top: -54px; }
+            .sleep-z-2 { font-size: 0.65rem; top: -58px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- SPLASH SCREEN PWA -->
+    <div id="pwa-splash">
+        <img src="https://drive.google.com/thumbnail?id=10kGraJ1xLm9g2BMGAIWemhfhen34cC70&sz=w300" 
+             alt="ArisanKu"
+             onerror="this.style.display='none'">
+        <div class="splash-loader"></div>
+    </div>
+
+    <div class="safe-area-top"></div>
+    <div class="main-container">
+        <div class="carousel-container">
+            <div class="carousel-loading">Memuat foto...</div>
+            <div class="carousel-background" id="carousel-background"></div>
+            <div class="carousel-slides" id="carousel-slides"></div>
+            <div class="carousel-controls">
+                <button class="carousel-btn" id="prev-btn">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="carousel-indicators" id="carousel-indicators"></div>
+                <button class="carousel-btn" id="next-btn">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+       
+        <div class="container">
+            <h2>DATA REPORT</h2>
+            
+            <div class="table-wrapper">
+                
+                <div class="capybara-peek">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <ellipse cx="25" cy="30" rx="8" ry="10" fill="#8B6F47"/>
+                        <ellipse cx="75" cy="30" rx="8" ry="10" fill="#8B6F47"/>
+                        <ellipse cx="50" cy="55" rx="38" ry="35" fill="#A0825F"/>
+                        <ellipse cx="50" cy="75" rx="22" ry="15" fill="#C4A77D"/>
+                        <ellipse cx="50" cy="72" rx="6" ry="4" fill="#4A3728"/>
+                        <circle cx="35" cy="50" r="6" fill="#2C1810"/>
+                        <circle cx="37" cy="48" r="2" fill="white"/>
+                        <circle cx="65" cy="50" r="6" fill="#2C1810"/>
+                        <circle cx="67" cy="48" r="2" fill="white"/>
+                        <ellipse cx="28" cy="65" rx="6" ry="4" fill="#FFB6B6" opacity="0.7"/>
+                        <ellipse cx="72" cy="65" rx="6" ry="4" fill="#FFB6B6" opacity="0.7"/>
+                        <path d="M 42 82 Q 50 86 58 82" stroke="#4A3728" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        <line x1="20" y1="75" x2="30" y2="75" stroke="#4A3728" stroke-width="1" stroke-linecap="round"/>
+                        <line x1="70" y1="75" x2="80" y2="75" stroke="#4A3728" stroke-width="1" stroke-linecap="round"/>
+                    </svg>
+                    <div class="capybara-bubble">Halo! 👋</div>
+                </div>
+                
+                <div class="capybara-dance">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <ellipse cx="50" cy="68" rx="35" ry="26" fill="#A0825F"/>
+                        <circle cx="50" cy="38" r="24" fill="#A0825F"/>
+                        <ellipse cx="34" cy="18" rx="7" ry="9" fill="#8B6F47"/>
+                        <ellipse cx="66" cy="18" rx="7" ry="9" fill="#8B6F47"/>
+                        <ellipse cx="50" cy="52" rx="14" ry="10" fill="#C4A77D"/>
+                        <ellipse cx="50" cy="49" rx="4" ry="3" fill="#4A3728"/>
+                        <path d="M 38 35 Q 41 30 44 35" stroke="#2C1810" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                        <path d="M 56 35 Q 59 30 62 35" stroke="#2C1810" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                        <ellipse cx="32" cy="45" rx="5" ry="3.5" fill="#FFB6B6" opacity="0.8"/>
+                        <ellipse cx="68" cy="45" rx="5" ry="3.5" fill="#FFB6B6" opacity="0.8"/>
+                        <ellipse cx="50" cy="58" rx="6" ry="4" fill="#4A3728"/>
+                        <ellipse cx="50" cy="59" rx="3" ry="2" fill="#FF6B6B"/>
+                        <g class="arm-left">
+                            <ellipse cx="20" cy="60" rx="6" ry="8" fill="#A0825F" transform="rotate(-30 20 60)"/>
+                        </g>
+                        <g class="arm-right">
+                            <ellipse cx="80" cy="60" rx="6" ry="8" fill="#A0825F" transform="rotate(30 80 60)"/>
+                        </g>
+                        <g class="foot-left">
+                            <ellipse cx="35" cy="92" rx="8" ry="6" fill="#8B6F47"/>
+                        </g>
+                        <g class="foot-right">
+                            <ellipse cx="65" cy="92" rx="8" ry="6" fill="#8B6F47"/>
+                        </g>
+                    </svg>
+                </div>
+                
+                <div class="music-note music-note-1">♪</div>
+                <div class="music-note music-note-2">♫</div>
+                <div class="music-note music-note-3">♩</div>
+                
+                <div class="capybara capybara-2">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <ellipse cx="50" cy="70" rx="40" ry="28" fill="#A0825F"/>
+                        <circle cx="65" cy="42" r="26" fill="#A0825F"/>
+                        <ellipse cx="55" cy="22" rx="7" ry="9" fill="#8B6F47"/>
+                        <ellipse cx="78" cy="22" rx="7" ry="9" fill="#8B6F47"/>
+                        <ellipse cx="78" cy="50" rx="14" ry="10" fill="#C4A77D"/>
+                        <ellipse cx="82" cy="48" rx="4" ry="3" fill="#4A3728"/>
+                        <circle cx="62" cy="38" r="5" fill="#2C1810"/>
+                        <circle cx="64" cy="36" r="1.8" fill="white"/>
+                        <ellipse cx="58" cy="50" rx="5" ry="3" fill="#FFB6B6" opacity="0.7"/>
+                        <path d="M 74 56 Q 78 60 82 56" stroke="#4A3728" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                        <ellipse cx="30" cy="92" rx="8" ry="6" fill="#8B6F47"/>
+                        <ellipse cx="50" cy="92" rx="8" ry="6" fill="#8B6F47"/>
+                        <ellipse cx="70" cy="92" rx="8" ry="6" fill="#8B6F47"/>
+                    </svg>
+                </div>
+                
+                <div class="capybara-side">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <ellipse cx="50" cy="65" rx="38" ry="30" fill="#A0825F"/>
+                        <circle cx="50" cy="35" r="25" fill="#A0825F"/>
+                        <ellipse cx="32" cy="18" rx="7" ry="9" fill="#8B6F47"/>
+                        <ellipse cx="68" cy="18" rx="7" ry="9" fill="#8B6F47"/>
+                        <ellipse cx="50" cy="48" rx="16" ry="10" fill="#C4A77D"/>
+                        <ellipse cx="50" cy="45" rx="4" ry="3" fill="#4A3728"/>
+                        <path d="M 38 32 Q 41 28 44 32" stroke="#2C1810" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                        <path d="M 56 32 Q 59 28 62 32" stroke="#2C1810" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                        <ellipse cx="32" cy="42" rx="5" ry="3" fill="#FFB6B6" opacity="0.7"/>
+                        <ellipse cx="68" cy="42" rx="5" ry="3" fill="#FFB6B6" opacity="0.7"/>
+                        <path d="M 44 52 Q 50 56 56 52" stroke="#4A3728" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        <ellipse cx="50" cy="58" rx="6" ry="3" fill="#7CB342" transform="rotate(-20 50 58)"/>
+                    </svg>
+                </div>
+                
+                <div id="spreadsheet-data" class="spreadsheet-container">
+                    <div class="loading">Memuat data...</div>
+                </div>
+            </div>
+
+            <div class="button-container">
+                
+                <div class="capybara-sleep">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <ellipse cx="50" cy="70" rx="42" ry="22" fill="#A0825F"/>
+                        <ellipse cx="72" cy="65" rx="24" ry="20" fill="#A0825F"/>
+                        <ellipse cx="62" cy="48" rx="7" ry="8" fill="#8B6F47"/>
+                        <ellipse cx="82" cy="48" rx="7" ry="8" fill="#8B6F47"/>
+                        <ellipse cx="82" cy="72" rx="13" ry="9" fill="#C4A77D"/>
+                        <ellipse cx="86" cy="70" rx="4" ry="3" fill="#4A3728"/>
+                        <path d="M 66 62 Q 69 60 72 62" stroke="#2C1810" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        <path d="M 78 62 Q 81 60 84 62" stroke="#2C1810" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        <ellipse cx="64" cy="72" rx="4" ry="3" fill="#FFB6B6" opacity="0.7"/>
+                        <ellipse cx="86" cy="72" rx="4" ry="3" fill="#FFB6B6" opacity="0.7"/>
+                        <ellipse cx="80" cy="78" rx="3" ry="2" fill="#4A3728"/>
+                        <ellipse cx="22" cy="82" rx="8" ry="6" fill="#8B6F47"/>
+                        <ellipse cx="40" cy="84" rx="8" ry="6" fill="#8B6F47"/>
+                    </svg>
+                    <div class="drool"></div>
+                </div>
+                
+                <div class="sleep-z sleep-z-1">z</div>
+                <div class="sleep-z sleep-z-2">z</div>
+                <div class="sleep-z sleep-z-3">Z</div>
+
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSd6_K8PRuPeQhMVwn6XlKOgT00SAZlNa6EIPfF-vQDEVAWirw/viewform?usp=header" 
+                   class="depo-button">
+                    <svg class="capybara-btn-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <ellipse cx="50" cy="70" rx="38" ry="26" fill="#A0825F"/>
+                        <circle cx="50" cy="38" r="24" fill="#A0825F"/>
+                        <ellipse cx="34" cy="18" rx="7" ry="9" fill="#8B6F47"/>
+                        <ellipse cx="66" cy="18" rx="7" ry="9" fill="#8B6F47"/>
+                        <ellipse cx="50" cy="52" rx="14" ry="10" fill="#C4A77D"/>
+                        <ellipse cx="50" cy="49" rx="4" ry="3" fill="#4A3728"/>
+                        <path d="M 38 35 Q 41 30 44 35" stroke="#2C1810" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                        <path d="M 56 35 Q 59 30 62 35" stroke="#2C1810" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                        <ellipse cx="32" cy="45" rx="5" ry="3.5" fill="#FFB6B6" opacity="0.8"/>
+                        <ellipse cx="68" cy="45" rx="5" ry="3.5" fill="#FFB6B6" opacity="0.8"/>
+                        <g class="mulut-makan">
+                            <ellipse cx="50" cy="58" rx="6" ry="4" fill="#4A3728"/>
+                        </g>
+                        <g class="daun-makan">
+                            <ellipse cx="50" cy="64" rx="8" ry="4" fill="#7CB342" transform="rotate(-15 50 64)"/>
+                            <path d="M 44 62 Q 50 66 56 62" stroke="#558B2F" stroke-width="1.5" fill="none"/>
+                        </g>
+                        <ellipse cx="35" cy="92" rx="8" ry="6" fill="#8B6F47"/>
+                        <ellipse cx="65" cy="92" rx="8" ry="6" fill="#8B6F47"/>
+                    </svg>
+                    <span class="capybara-btn-label">🍃 Depo Dulu</span>
+                </a>
+                
+                <button class="pencairan-button" id="pencairan-btn">
+                    <svg class="capybara-btn-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <ellipse cx="50" cy="68" rx="36" ry="26" fill="#A0825F"/>
+                        <circle cx="68" cy="48" r="22" fill="#A0825F"/>
+                        <ellipse cx="58" cy="30" rx="7" ry="9" fill="#8B6F47"/>
+                        <ellipse cx="82" cy="32" rx="7" ry="9" fill="#8B6F47"/>
+                        <ellipse cx="82" cy="58" rx="12" ry="9" fill="#C4A77D"/>
+                        <ellipse cx="86" cy="56" rx="3.5" ry="3" fill="#4A3728"/>
+                        <path d="M 60 46 L 64 44 L 68 46" stroke="#2C1810" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                        <path d="M 72 46 L 76 44 L 80 46" stroke="#2C1810" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                        <ellipse cx="60" cy="58" rx="5" ry="3.5" fill="#FF9999" opacity="0.85"/>
+                        <ellipse cx="84" cy="60" rx="5" ry="3.5" fill="#FF9999" opacity="0.85"/>
+                        <ellipse cx="28" cy="90" rx="8" ry="6" fill="#8B6F47"/>
+                        <ellipse cx="68" cy="92" rx="8" ry="6" fill="#8B6F47"/>
+                        <ellipse cx="10" cy="65" rx="6" ry="4" fill="#8B6F47"/>
+                        <g class="pup-keluar">
+                            <ellipse cx="22" cy="72" rx="5" ry="4" fill="#5D4037"/>
+                            <ellipse cx="22" cy="68" rx="4" ry="3.5" fill="#6D4C41"/>
+                            <ellipse cx="22" cy="64" rx="3" ry="3" fill="#795548"/>
+                        </g>
+                        <g class="pus-effect">
+                            <path d="M 8 70 Q 12 68 16 70" stroke="#A5D6A7" stroke-width="2" fill="none" stroke-linecap="round"/>
+                            <path d="M 6 74 Q 10 72 14 74" stroke="#A5D6A7" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        </g>
+                    </svg>
+                    <span class="capybara-btn-label">💩 Pencairan</span>
+                </button>
+            </div>
+        </div>
+        
+        <footer>
+            <div class="safe-area-bottom">
+                &copy; 2024 ArisanKu. All rights reserved.
+            </div>
+        </footer>
+    </div>
+
+    <div class="password-popup" id="password-popup">
+        <div class="password-container">
+            <button class="close-popup" id="close-popup">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="password-content">
+                <div class="password-header">
+                    <div class="password-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h3>Akses Terproteksi</h3>
+                    <p>Masukkan kunci sandi untuk mengakses halaman pencairan</p>
+                </div>
+                
+                <form class="password-form" id="password-form">
+                    <div class="form-group">
+                        <label for="username"><i class="fas fa-user"></i> Kunci Sandi:</label>
+                        <input type="text" id="username" name="username" placeholder="Masukkan kunci sandi" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password"><i class="fas fa-key"></i> Password:</label>
+                        <input type="password" id="password" name="password" placeholder="Masukkan password" required>
+                    </div>
+                    
+                    <div class="password-message password-error" id="password-error">
+                        <i class="fas fa-exclamation-triangle"></i> Kunci sandi atau password salah!
+                    </div>
+                    
+                    <div class="password-message password-success" id="password-success">
+                        <i class="fas fa-check-circle"></i> Berhasil! Mengarahkan ke halaman pencairan...
+                    </div>
+                    
+                    <div class="password-actions">
+                        <button type="submit" class="password-submit">
+                            <i class="fas fa-unlock-alt"></i> Masuk
+                        </button>
+                        <button type="button" class="password-cancel" id="cancel-popup">
+                            <i class="fas fa-times"></i> Batal
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* PWA MANIFEST INLINE */
+        (function() {
+            const iconUrl = "https://drive.google.com/thumbnail?id=10kGraJ1xLm9g2BMGAIWemhfhen34cC70&sz=w300";
+            const manifest = {
+                "name": "ArisanKu",
+                "short_name": "ArisanKu",
+                "description": "ArisanKu - Aplikasi Data Report & Pencairan",
+                "start_url": ".",
+                "scope": ".",
+                "display": "standalone",
+                "orientation": "portrait-primary",
+                "background_color": "#4f46e5",
+                "theme_color": "#4f46e5",
+                "lang": "id",
+                "icons": [
+                    { "src": iconUrl, "sizes": "192x192", "type": "image/png", "purpose": "any" },
+                    { "src": iconUrl, "sizes": "512x512", "type": "image/png", "purpose": "any" },
+                    { "src": iconUrl, "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+                    { "src": iconUrl, "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+                ]
+            };
+            const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/manifest+json' });
+            const manifestUrl = URL.createObjectURL(manifestBlob);
+            document.getElementById('pwa-manifest').setAttribute('href', manifestUrl);
+        })();
+
+        /* PWA SERVICE WORKER INLINE */
+        if ('serviceWorker' in navigator) {
+            const swCode = `
+                const CACHE_NAME = 'arisanku-cache-v1';
+                const PRECACHE_URLS = [
+                    '/',
+                    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
+                    'https://drive.google.com/thumbnail?id=10kGraJ1xLm9g2BMGAIWemhfhen34cC70&sz=w300'
+                ];
+                self.addEventListener('install', (event) => {
+                    self.skipWaiting();
+                    event.waitUntil(
+                        caches.open(CACHE_NAME).then((cache) => cache.addAll(PRECACHE_URLS).catch(() => {}))
+                    );
+                });
+                self.addEventListener('activate', (event) => {
+                    event.waitUntil(
+                        caches.keys().then((keys) => Promise.all(
+                            keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))
+                        )).then(() => self.clients.claim())
+                    );
+                });
+                self.addEventListener('fetch', (event) => {
+                    if (event.request.method !== 'GET') return;
+                    event.respondWith(
+                        caches.match(event.request).then((cached) => {
+                            if (cached) return cached;
+                            return fetch(event.request).then((response) => {
+                                if (response && response.status === 200 && response.type === 'basic') {
+                                    const responseClone = response.clone();
+                                    caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseClone));
+                                }
+                                return response;
+                            }).catch(() => cached);
+                        })
+                    );
+                });
+            `;
+            const swBlob = new Blob([swCode], { type: 'application/javascript' });
+            const swUrl = URL.createObjectURL(swBlob);
+            navigator.serviceWorker.register(swUrl, { scope: './' }).then((reg) => {
+                console.log('Service Worker registered:', reg.scope);
+            }).catch((err) => {
+                console.warn('Service Worker registration failed:', err);
+            });
+        }
+
+        /* SPLASH HIDE */
+        function hideSplash() {
+            const splash = document.getElementById('pwa-splash');
+            if (splash && !splash.classList.contains('hide')) {
+                splash.classList.add('hide');
+                setTimeout(() => { splash.style.display = 'none'; }, 600);
+            }
+        }
+        window.addEventListener('load', () => setTimeout(hideSplash, 600));
+        setTimeout(hideSplash, 4000);
+
+        /* APLIKASI */
+        const photos = [
+            "https://drive.google.com/thumbnail?id=1jCDl9udYFooheT9LpI_-yOwnVwxTfdkn&sz=w1000",
+            "https://drive.google.com/thumbnail?id=1njn1ENT1eiRLrrWZX3iS8lkqvfYFZAV0&sz=w1000",
+            "https://drive.google.com/thumbnail?id=10HHLbPmbdT6Ax83LHgCU-X2Ty0kEuRmb&sz=w1000",
+            "https://drive.google.com/thumbnail?id=1dkZMKiIsvi2R1CzmT7oG_t0NIL7XEDM9&sz=w1000",
+            "https://drive.google.com/thumbnail?id=1B9ZML4tRQ5pKgZDBdN9E_9s4UIsHrtFg&sz=w1000",
+            "https://drive.google.com/thumbnail?id=1oqLFQsuNwYFrsyrbM0Bw17olG567BvXu&sz=w1000",
+            "https://drive.google.com/thumbnail?id=1aqiO0_CvhRCQNtdaOw8BPkUPyOByDSPg&sz=w1000",
+            "https://drive.google.com/thumbnail?id=1pk6AqcwfZgSGOpkS98nsCrMA-jbSFqA2&sz=w1000",
+            "https://drive.google.com/thumbnail?id=1Wy6ao0SuGkwRBcGLSEn-Ih2AT7PFFYZG&sz=w1000",
+            "https://drive.google.com/thumbnail?id=1rLIAXKIIQyNAEV1lLRNhhTyFtfiu1kPz&sz=w1000",
+            "https://drive.google.com/thumbnail?id=1jFzFtk-l4TCQDkVDJKgg9GKGoFwmrpIP&sz=w1000",
+            "https://drive.google.com/thumbnail?id=1XjT5VqTWDFvs_ulp17kLU9DAoN1sS4Yv&sz=w1000",
+            "https://drive.google.com/thumbnail?id=1EZrRTqPVQi8eFHzv_10f7LCWjA4VFAtt&sz=w1000",
+            "https://drive.google.com/thumbnail?id=10duaH5p92ptGqhXE7O2sOzOx4bOksfk6&sz=w1000"
+        ];
+
+        const CORRECT_USERNAME = "RidwanGanteng";
+        const CORRECT_PASSWORD = "admin123";
+
+        let currentSlide = 0;
+        let loadedImages = 0;
+        const totalImages = photos.length;
+        const carouselSlides = document.getElementById('carousel-slides');
+        const carouselBackground = document.getElementById('carousel-background');
+        const carouselIndicators = document.getElementById('carousel-indicators');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const loadingElement = document.querySelector('.carousel-loading');
+
+        const passwordPopup = document.getElementById('password-popup');
+        const pencairanBtn = document.getElementById('pencairan-btn');
+        const closePopup = document.getElementById('close-popup');
+        const cancelPopup = document.getElementById('cancel-popup');
+        const passwordForm = document.getElementById('password-form');
+        const passwordError = document.getElementById('password-error');
+        const passwordSuccess = document.getElementById('password-success');
+
+        function showPasswordPopup() {
+            passwordPopup.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hidePasswordPopup() {
+            passwordPopup.classList.remove('active');
+            document.body.style.overflow = '';
+            passwordForm.reset();
+            passwordError.classList.remove('active');
+            passwordSuccess.classList.remove('active');
+        }
+
+        function validateLogin(username, password) {
+            return username === CORRECT_USERNAME && password === CORRECT_PASSWORD;
+        }
+
+        pencairanBtn.addEventListener('click', showPasswordPopup);
+        closePopup.addEventListener('click', hidePasswordPopup);
+        cancelPopup.addEventListener('click', hidePasswordPopup);
+
+        passwordPopup.addEventListener('click', function(e) {
+            if (e.target === passwordPopup) hidePasswordPopup();
+        });
+
+        passwordForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (validateLogin(username, password)) {
+                passwordError.classList.remove('active');
+                passwordSuccess.classList.add('active');
+                setTimeout(() => {
+                    window.location.href = 'https://script.google.com/macros/s/AKfycbx481tOPEhrt8hTCWU2AC16hchTpXKw4kVrP2Z0i0Q4vbL7NznaR9e3RtC5E6qIH4r1PA/exec?page=input';
+                }, 2000);
+            } else {
+                passwordSuccess.classList.remove('active');
+                passwordError.classList.add('active');
+                document.getElementById('password').value = '';
+                document.getElementById('password').focus();
+            }
+        });
+
+        function updateLoadingProgress() {
+            loadedImages++;
+            const progress = Math.round((loadedImages / totalImages) * 100);
+            loadingElement.textContent = `Memuat foto... ${progress}%`;
+            if (loadedImages === totalImages) {
+                setTimeout(() => { loadingElement.style.display = 'none'; }, 500);
+            }
+        }
+
+        photos.forEach((photo, index) => {
+            const slide = document.createElement('div');
+            slide.className = 'carousel-slide';
+            if (index === 0) slide.classList.add('active');
+            
+            const img = document.createElement('img');
+            img.src = photo;
+            img.alt = `Foto ${index + 1}`;
+            img.className = 'carousel-image';
+            
+            img.onload = function() {
+                updateLoadingProgress();
+                if (index === 0) updateBackground(photo);
+            };
+            
+            img.onerror = function() {
+                console.error(`Gagal memuat gambar: ${photo}`);
+                updateLoadingProgress();
+                img.src = `https://via.placeholder.com/800x600/333/ffffff?text=Foto+${index+1}+Tidak+Tersedia`;
+                if (index === 0) updateBackground(img.src);
+            };
+            
+            slide.appendChild(img);
+            carouselSlides.appendChild(slide);
+            
+            const indicator = document.createElement('div');
+            indicator.className = 'carousel-indicator';
+            if (index === 0) indicator.classList.add('active');
+            indicator.addEventListener('click', () => goToSlide(index));
+            carouselIndicators.appendChild(indicator);
+        });
+
+        function updateBackground(photoUrl) {
+            carouselBackground.style.backgroundImage = `url(${photoUrl})`;
+        }
+
+        function goToSlide(index) {
+            const slides = document.querySelectorAll('.carousel-slide');
+            const indicators = document.querySelectorAll('.carousel-indicator');
+            slides[currentSlide].classList.remove('active');
+            indicators[currentSlide].classList.remove('active');
+            currentSlide = index;
+            slides[currentSlide].classList.add('active');
+            indicators[currentSlide].classList.add('active');
+            const currentImg = slides[currentSlide].querySelector('img');
+            updateBackground(currentImg.src);
+        }
+
+        function nextSlide() {
+            goToSlide((currentSlide + 1) % photos.length);
+        }
+
+        function prevSlide() {
+            goToSlide((currentSlide - 1 + photos.length) % photos.length);
+        }
+
+        prevBtn.addEventListener('click', prevSlide);
+        nextBtn.addEventListener('click', nextSlide);
+
+        let slideInterval = setInterval(nextSlide, 5000);
+
+        const carousel = document.querySelector('.carousel-container');
+        carousel.addEventListener('mouseenter', () => clearInterval(slideInterval));
+        carousel.addEventListener('mouseleave', () => { slideInterval = setInterval(nextSlide, 5000); });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') prevSlide();
+            else if (e.key === 'ArrowRight') nextSlide();
+            else if (e.key === 'Escape' && passwordPopup.classList.contains('active')) hidePasswordPopup();
+        });
+
+        const spreadsheetId = '1rdH1RF8b_YEsNZ4HUud_mR29I2q6YN6NAQUABzXaQd8';
+        const sheetName = 'Report';
+        const range = 'A1:G13';
+        const csvUrl = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}&range=${encodeURIComponent(range)}`;
+        const MERGE_COLUMN_NAME = 'TOTAL CAIR';
+        
+        async function loadSpreadsheetData() {
+            const container = document.getElementById('spreadsheet-data');
+            try {
+                const response = await fetch(csvUrl);
+                if (!response.ok) throw new Error(`Gagal mengambil data: ${response.status} ${response.statusText}`);
+                const csvText = await response.text();
+                const rows = parseCSV(csvText);
+                if (rows.length === 0) {
+                    container.innerHTML = '<div class="error">Data kosong</div>';
+                    return;
+                }
+                const table = document.createElement('table');
+                const headers = rows[0];
+                const totalCols = headers.length;
+                let totalCairIndex = -1;
+                for (let c = 0; c < totalCols; c++) {
+                    if ((headers[c] || '').toUpperCase().trim() === MERGE_COLUMN_NAME) {
+                        totalCairIndex = c;
+                        break;
+                    }
+                }
+                const thead = document.createElement('thead');
+                const headerRow = document.createElement('tr');
+                headers.forEach((cell) => {
+                    const th = document.createElement('th');
+                    th.textContent = cell;
+                    headerRow.appendChild(th);
+                });
+                thead.appendChild(headerRow);
+                table.appendChild(thead);
+                
+                const tbody = document.createElement('tbody');
+                const dataRows = rows.slice(1);
+                const totalDataRows = dataRows.length;
+                const skippedCells = new Set();
+                
+                for (let r = 0; r < totalDataRows; r++) {
+                    const rowData = dataRows[r];
+                    const row = document.createElement('tr');
+                    for (let c = 0; c < totalCols; c++) {
+                        if (skippedCells.has(`${r}-${c}`)) continue;
+                        const td = document.createElement('td');
+                        const cellValue = (rowData[c] || '').trim();
+                        if (c === totalCairIndex && totalCairIndex !== -1) {
+                            const nextRowIdx = r + 1;
+                            if (nextRowIdx < totalDataRows) {
+                                td.rowSpan = 2;
+                                td.setAttribute('data-merged', 'true');
+                                skippedCells.add(`${nextRowIdx}-${c}`);
+                            }
+                            td.textContent = cellValue;
+                        } else {
+                            td.textContent = cellValue;
+                        }
+                        row.appendChild(td);
+                    }
+                    tbody.appendChild(row);
+                }
+                table.appendChild(tbody);
+                container.innerHTML = '';
+                container.appendChild(table);
+            } catch (error) {
+                console.error('Error:', error);
+                container.innerHTML = `<div class="error">Terjadi kesalahan: ${error.message}</div>`;
+            }
+        }
+        
+        function parseCSV(csvText) {
+            const rows = [];
+            let currentRow = [];
+            let currentCell = '';
+            let insideQuotes = false;
+            for (let i = 0; i < csvText.length; i++) {
+                const char = csvText[i];
+                if (char === '"') insideQuotes = !insideQuotes;
+                else if (char === ',' && !insideQuotes) { currentRow.push(currentCell); currentCell = ''; }
+                else if (char === '\n' && !insideQuotes) { currentRow.push(currentCell); rows.push(currentRow); currentRow = []; currentCell = ''; }
+                else currentCell += char;
+            }
+            if (currentCell !== '' || currentRow.length > 0) {
+                currentRow.push(currentCell);
+                rows.push(currentRow);
+            }
+            return rows;
+        }
+        
+        document.addEventListener('DOMContentLoaded', loadSpreadsheetData);
+    </script>
+</body>
+</html>
