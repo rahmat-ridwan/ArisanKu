@@ -14,7 +14,6 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="application-name" content="ArisanKu">
 
-    <!-- ICON APLIKASI -->
     <link rel="icon" type="image/png" href="https://drive.google.com/thumbnail?id=10kGraJ1xLm9g2BMGAIWemhfhen34cC70&sz=w300">
     <link rel="apple-touch-icon" href="https://drive.google.com/thumbnail?id=10kGraJ1xLm9g2BMGAIWemhfhen34cC70&sz=w300">
     <link rel="apple-touch-icon" sizes="152x152" href="https://drive.google.com/thumbnail?id=10kGraJ1xLm9g2BMGAIWemhfhen34cC70&sz=w300">
@@ -68,9 +67,6 @@
             overflow-x: hidden;
         }
 
-        /* ============================================ */
-        /* SPLASH / LOADING SCREEN PWA */
-        /* ============================================ */
         #pwa-splash {
             position: fixed;
             inset: 0;
@@ -174,9 +170,6 @@
             100% { transform: translateX(350%); }
         }
 
-        /* ============================================ */
-        /* INSTALL GATE — Blokir dashboard jika belum install */
-        /* ============================================ */
         #install-gate {
             position: fixed;
             inset: 0;
@@ -199,10 +192,6 @@
             width: 120px;
             height: 120px;
             object-fit: contain;
-            background: transparent;
-            border-radius: 0;
-            box-shadow: none;
-            border: none;
             margin-bottom: 18px;
             display: block;
         }
@@ -248,15 +237,11 @@
             line-height: 1.45;
         }
 
-        /* Saat gate aktif, sembunyikan konten utama & install banner lama */
         body.gate-active .main-container,
         body.gate-active #install-prompt {
             display: none !important;
         }
 
-        /* ============================================ */
-        /* iOS INSTALL INSTRUCTION MODAL */
-        /* ============================================ */
         #ios-install-modal {
             display: none;
             position: fixed;
@@ -294,10 +279,6 @@
             object-fit: contain;
             display: block;
             margin: 0 auto 12px;
-            background: transparent;
-            border: none;
-            box-shadow: none;
-            border-radius: 0;
         }
 
         .ios-modal-card h3 {
@@ -390,7 +371,6 @@
             flex-direction: column;
         }
         
-        /* CAROUSEL STYLES */
         .carousel-container {
             position: relative;
             width: 100%;
@@ -1475,40 +1455,15 @@
                 font-size: 0.8rem;
             }
             
-            .capybara {
-                width: 65px;
-                height: 65px;
-            }
-            
-            .capybara-peek {
-                width: 58px;
-                height: 58px;
-                top: -32px;
-                left: -8px;
-            }
-            
-            .capybara-dance {
-                width: 65px;
-                height: 65px;
-                top: -38px;
-                right: -8px;
-            }
-            
-            .capybara-sleep {
-                width: 60px;
-                height: 60px;
-                top: -70px;
-            }
-            
-            .drool {
-                top: 38px;
-                left: 36px;
-            }
+            .capybara { width: 65px; height: 65px; }
+            .capybara-peek { width: 58px; height: 58px; top: -32px; left: -8px; }
+            .capybara-dance { width: 65px; height: 65px; top: -38px; right: -8px; }
+            .capybara-sleep { width: 60px; height: 60px; top: -70px; }
+            .drool { top: 38px; left: 36px; }
             
             .depo-button .capybara-btn-svg,
             .pencairan-button .capybara-btn-svg {
-                width: 95px;
-                height: 95px;
+                width: 95px; height: 95px;
             }
             
             .depo-button .capybara-btn-label,
@@ -1525,11 +1480,7 @@
                 margin-bottom: 3px;
             }
             
-            .carousel-btn {
-                width: 30px;
-                height: 30px;
-                font-size: 14px;
-            }
+            .carousel-btn { width: 30px; height: 30px; font-size: 14px; }
             
             .container {
                 margin: 5px;
@@ -1537,21 +1488,11 @@
                 width: calc(100% - 10px);
             }
             
-            .container h2 {
-                font-size: 1rem;
-                margin-bottom: 8px;
-            }
+            .container h2 { font-size: 1rem; margin-bottom: 8px; }
             
-            .spreadsheet-container {
-                overflow: hidden;
-                width: 100%;
-            }
+            .spreadsheet-container { overflow: hidden; width: 100%; }
             
-            table {
-                width: 100%;
-                table-layout: fixed;
-                min-width: 100%;
-            }
+            table { width: 100%; table-layout: fixed; min-width: 100%; }
             
             th, td {
                 padding: 6px 2px;
@@ -1564,24 +1505,9 @@
                 line-height: 1.15;
             }
             
-            th:first-child,
-            td:first-child {
-                width: 16%;
-                font-size: 0.54rem;
-            }
-            
-            th:nth-child(2),
-            td:nth-child(2) {
-                width: 22%;
-                font-weight: 600;
-                font-size: 0.52rem;
-            }
-            
-            th:nth-child(n+3),
-            td:nth-child(n+3) {
-                width: 15.5%;
-                font-size: 0.52rem;
-            }
+            th:first-child, td:first-child { width: 16%; font-size: 0.54rem; }
+            th:nth-child(2), td:nth-child(2) { width: 22%; font-weight: 600; font-size: 0.52rem; }
+            th:nth-child(n+3), td:nth-child(n+3) { width: 15.5%; font-size: 0.52rem; }
             
             .button-container {
                 flex-direction: row;
@@ -1592,17 +1518,8 @@
                 flex-wrap: nowrap;
             }
             
-            .depo-button,
-            .pencairan-button {
-                min-width: 70px;
-                flex: 0 0 auto;
-            }
-            
-            .depo-button .capybara-btn-svg,
-            .pencairan-button .capybara-btn-svg {
-                width: 65px;
-                height: 65px;
-            }
+            .depo-button, .pencairan-button { min-width: 70px; flex: 0 0 auto; }
+            .depo-button .capybara-btn-svg, .pencairan-button .capybara-btn-svg { width: 65px; height: 65px; }
             
             .depo-button .capybara-btn-label,
             .pencairan-button .capybara-btn-label {
@@ -1612,124 +1529,36 @@
                 border-width: 1.5px;
             }
             
-            .password-container {
-                padding: 25px 20px;
-                margin: 15px;
-                border-radius: 15px;
-            }
+            .password-container { padding: 25px 20px; margin: 15px; border-radius: 15px; }
+            .password-header h3 { font-size: 1.4rem; }
+            .password-header p { font-size: 0.9rem; }
+            .password-icon { width: 60px; height: 60px; }
+            .password-icon i { font-size: 1.8rem; }
+            .password-actions { flex-direction: column; }
             
-            .password-header h3 {
-                font-size: 1.4rem;
-            }
-            
-            .password-header p {
-                font-size: 0.9rem;
-            }
-            
-            .password-icon {
-                width: 60px;
-                height: 60px;
-            }
-            
-            .password-icon i {
-                font-size: 1.8rem;
-            }
-            
-            .password-actions {
-                flex-direction: column;
-            }
-            
-            .capybara {
-                width: 42px;
-                height: 42px;
-            }
-            
-            .capybara-peek {
-                width: 40px;
-                height: 40px;
-                top: -24px;
-                left: -3px;
-            }
-            
-            .capybara-dance {
-                width: 44px;
-                height: 44px;
-                top: -28px;
-                right: -3px;
-            }
-            
-            .capybara-side {
-                width: 32px;
-                height: 32px;
-                right: -15px;
-            }
-            
-            .capybara-bubble {
-                font-size: 0.55rem;
-                padding: 3px 8px;
-                left: 45px;
-                top: -5px;
-            }
-            
-            .table-wrapper {
-                margin-top: 18px;
-            }
-            
-            .music-note {
-                font-size: 0.85rem;
-            }
-            
-            .capybara-sleep {
-                width: 42px;
-                height: 42px;
-                top: -50px;
-            }
-            
-            .drool {
-                top: 26px;
-                left: 25px;
-                height: 8px;
-            }
-            
+            .capybara { width: 42px; height: 42px; }
+            .capybara-peek { width: 40px; height: 40px; top: -24px; left: -3px; }
+            .capybara-dance { width: 44px; height: 44px; top: -28px; right: -3px; }
+            .capybara-side { width: 32px; height: 32px; right: -15px; }
+            .capybara-bubble { font-size: 0.55rem; padding: 3px 8px; left: 45px; top: -5px; }
+            .table-wrapper { margin-top: 18px; }
+            .music-note { font-size: 0.85rem; }
+            .capybara-sleep { width: 42px; height: 42px; top: -50px; }
+            .drool { top: 26px; left: 25px; height: 8px; }
             .sleep-z-1 { font-size: 0.8rem; top: -65px; }
             .sleep-z-2 { font-size: 0.8rem; top: -70px; }
             .sleep-z-3 { font-size: 0.8rem; top: -75px; }
         }
         
         @media (max-width: 480px) {
-            .carousel-container {
-                height: 25vh;
-                min-height: 110px;
-            }
+            .carousel-container { height: 25vh; min-height: 110px; }
+            .carousel-btn { width: 25px; height: 25px; font-size: 12px; }
             
-            .carousel-btn {
-                width: 25px;
-                height: 25px;
-                font-size: 12px;
-            }
+            .container { margin: 3px; padding: 4px; width: calc(100% - 6px); }
+            .container h2 { font-size: 0.9rem; margin-bottom: 6px; }
             
-            .container {
-                margin: 3px;
-                padding: 4px;
-                width: calc(100% - 6px);
-            }
-            
-            .container h2 {
-                font-size: 0.9rem;
-                margin-bottom: 6px;
-            }
-            
-            .spreadsheet-container {
-                overflow: hidden;
-                width: 100%;
-                border-radius: 8px;
-            }
-            
-            table {
-                width: 100%;
-                table-layout: fixed;
-                min-width: 100%;
-            }
+            .spreadsheet-container { overflow: hidden; width: 100%; border-radius: 8px; }
+            table { width: 100%; table-layout: fixed; min-width: 100%; }
             
             th, td {
                 padding: 5px 1px;
@@ -1742,23 +1571,9 @@
                 word-break: break-word;
             }
             
-            th:first-child,
-            td:first-child {
-                width: 15%;
-                font-size: 0.47rem;
-            }
-            
-            th:nth-child(2),
-            td:nth-child(2) {
-                width: 22%;
-                font-size: 0.45rem;
-            }
-            
-            th:nth-child(n+3),
-            td:nth-child(n+3) {
-                width: 15.75%;
-                font-size: 0.45rem;
-            }
+            th:first-child, td:first-child { width: 15%; font-size: 0.47rem; }
+            th:nth-child(2), td:nth-child(2) { width: 22%; font-size: 0.45rem; }
+            th:nth-child(n+3), td:nth-child(n+3) { width: 15.75%; font-size: 0.45rem; }
             
             .button-container {
                 gap: 12px;
@@ -1767,17 +1582,8 @@
                 align-items: flex-end;
             }
             
-            .depo-button,
-            .pencairan-button {
-                min-width: 60px;
-                flex: 0 0 auto;
-            }
-            
-            .depo-button .capybara-btn-svg,
-            .pencairan-button .capybara-btn-svg {
-                width: 58px;
-                height: 58px;
-            }
+            .depo-button, .pencairan-button { min-width: 60px; flex: 0 0 auto; }
+            .depo-button .capybara-btn-svg, .pencairan-button .capybara-btn-svg { width: 58px; height: 58px; }
             
             .depo-button .capybara-btn-label,
             .pencairan-button .capybara-btn-label {
@@ -1788,121 +1594,33 @@
                 letter-spacing: 0;
             }
             
-            .password-container {
-                padding: 20px 15px;
-            }
+            .password-container { padding: 20px 15px; }
+            .password-header h3 { font-size: 1.2rem; margin-bottom: 8px; }
+            .password-header p { font-size: 0.8rem; }
+            .password-icon { width: 50px; height: 50px; margin-bottom: 15px; }
+            .password-icon i { font-size: 1.5rem; }
+            .form-group input { padding: 12px 15px; font-size: 0.9rem; }
+            .password-submit, .password-cancel { padding: 13px 20px; font-size: 0.95rem; }
             
-            .password-header h3 {
-                font-size: 1.2rem;
-                margin-bottom: 8px;
-            }
-            
-            .password-header p {
-                font-size: 0.8rem;
-            }
-            
-            .password-icon {
-                width: 50px;
-                height: 50px;
-                margin-bottom: 15px;
-            }
-            
-            .password-icon i {
-                font-size: 1.5rem;
-            }
-            
-            .form-group input {
-                padding: 12px 15px;
-                font-size: 0.9rem;
-            }
-            
-            .password-submit,
-            .password-cancel {
-                padding: 13px 20px;
-                font-size: 0.95rem;
-            }
-            
-            .capybara {
-                width: 36px;
-                height: 36px;
-            }
-            
-            .capybara-peek {
-                width: 34px;
-                height: 34px;
-                top: -20px;
-                left: -2px;
-            }
-            
-            .capybara-dance {
-                width: 38px;
-                height: 38px;
-                top: -22px;
-                right: -2px;
-            }
-            
-            .capybara-side {
-                display: none;
-            }
-            
-            .capybara-bubble {
-                font-size: 0.5rem;
-                padding: 2px 6px;
-                left: 38px;
-                top: -3px;
-            }
-            
-            .table-wrapper {
-                margin-top: 15px;
-            }
-            
-            .music-note {
-                font-size: 0.75rem;
-            }
-            
-            .music-note-3 {
-                display: none;
-            }
-            
-            .capybara-sleep {
-                width: 36px;
-                height: 36px;
-                top: -44px;
-            }
-            
-            .drool {
-                top: 22px;
-                left: 21px;
-                height: 7px;
-                width: 3px;
-            }
-            
+            .capybara { width: 36px; height: 36px; }
+            .capybara-peek { width: 34px; height: 34px; top: -20px; left: -2px; }
+            .capybara-dance { width: 38px; height: 38px; top: -22px; right: -2px; }
+            .capybara-side { display: none; }
+            .capybara-bubble { font-size: 0.5rem; padding: 2px 6px; left: 38px; top: -3px; }
+            .table-wrapper { margin-top: 15px; }
+            .music-note { font-size: 0.75rem; }
+            .music-note-3 { display: none; }
+            .capybara-sleep { width: 36px; height: 36px; top: -44px; }
+            .drool { top: 22px; left: 21px; height: 7px; width: 3px; }
             .sleep-z-1 { font-size: 0.7rem; top: -58px; }
             .sleep-z-2 { font-size: 0.7rem; top: -62px; }
             .sleep-z-3 { display: none; }
 
-            #install-gate .gate-icon {
-                width: 96px;
-                height: 96px;
-            }
-
-            .ios-modal-icon {
-                width: 88px;
-                height: 88px;
-            }
-
-            #install-gate h2 {
-                font-size: 1.15rem;
-            }
-
-            #install-gate p {
-                font-size: 0.8rem;
-            }
-
-            #install-gate .gate-btn {
-                padding: 13px 30px;
-                font-size: 0.92rem;
-            }
+            #install-gate .gate-icon { width: 96px; height: 96px; }
+            .ios-modal-icon { width: 88px; height: 88px; }
+            #install-gate h2 { font-size: 1.15rem; }
+            #install-gate p { font-size: 0.8rem; }
+            #install-gate .gate-btn { padding: 13px 30px; font-size: 0.92rem; }
         }
         
         @media (max-width: 360px) {
@@ -1914,39 +1632,13 @@
                 word-break: break-word;
             }
             
-            th:first-child,
-            td:first-child {
-                width: 15%;
-                font-size: 0.42rem;
-            }
+            th:first-child, td:first-child { width: 15%; font-size: 0.42rem; }
+            th:nth-child(2), td:nth-child(2) { width: 22%; font-size: 0.4rem; }
+            th:nth-child(n+3), td:nth-child(n+3) { width: 15.75%; font-size: 0.4rem; }
             
-            th:nth-child(2),
-            td:nth-child(2) {
-                width: 22%;
-                font-size: 0.4rem;
-            }
-            
-            th:nth-child(n+3),
-            td:nth-child(n+3) {
-                width: 15.75%;
-                font-size: 0.4rem;
-            }
-            
-            .button-container {
-                gap: 8px;
-                margin: 28px 0 0;
-            }
-            
-            .depo-button,
-            .pencairan-button {
-                min-width: 55px;
-            }
-            
-            .depo-button .capybara-btn-svg,
-            .pencairan-button .capybara-btn-svg {
-                width: 52px;
-                height: 52px;
-            }
+            .button-container { gap: 8px; margin: 28px 0 0; }
+            .depo-button, .pencairan-button { min-width: 55px; }
+            .depo-button .capybara-btn-svg, .pencairan-button .capybara-btn-svg { width: 52px; height: 52px; }
             
             .depo-button .capybara-btn-label,
             .pencairan-button .capybara-btn-label {
@@ -1955,26 +1647,14 @@
                 margin-top: -4px;
             }
             
-            .capybara-sleep {
-                width: 32px;
-                height: 32px;
-                top: -40px;
-            }
-            
-            .drool {
-                top: 20px;
-                left: 19px;
-                height: 6px;
-                width: 3px;
-            }
-            
+            .capybara-sleep { width: 32px; height: 32px; top: -40px; }
+            .drool { top: 20px; left: 19px; height: 6px; width: 3px; }
             .sleep-z-1 { font-size: 0.65rem; top: -54px; }
             .sleep-z-2 { font-size: 0.65rem; top: -58px; }
         }
     </style>
 </head>
 <body>
-    <!-- SPLASH SCREEN PWA -->
     <div id="pwa-splash">
         <img src="https://drive.google.com/thumbnail?id=10kGraJ1xLm9g2BMGAIWemhfhen34cC70&sz=w300" 
              alt="ArisanKu"
@@ -1982,12 +1662,8 @@
         <svg class="splash-capybara" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
             <ellipse cx="50" cy="72" rx="36" ry="24" fill="#A0825F"/>
             <circle cx="50" cy="42" r="24" fill="#A0825F"/>
-            <g class="ear-left">
-                <ellipse cx="32" cy="22" rx="7" ry="9" fill="#8B6F47"/>
-            </g>
-            <g class="ear-right">
-                <ellipse cx="68" cy="22" rx="7" ry="9" fill="#8B6F47"/>
-            </g>
+            <g class="ear-left"><ellipse cx="32" cy="22" rx="7" ry="9" fill="#8B6F47"/></g>
+            <g class="ear-right"><ellipse cx="68" cy="22" rx="7" ry="9" fill="#8B6F47"/></g>
             <ellipse cx="50" cy="55" rx="15" ry="10" fill="#C4A77D"/>
             <ellipse cx="50" cy="52" rx="4" ry="3" fill="#4A3728"/>
             <g class="eye-blink">
@@ -2000,9 +1676,7 @@
             </g>
             <ellipse cx="33" cy="48" rx="5" ry="3.5" fill="#FFB6B6" opacity="0.8"/>
             <ellipse cx="67" cy="48" rx="5" ry="3.5" fill="#FFB6B6" opacity="0.8"/>
-            <g class="mouth">
-                <ellipse cx="50" cy="61" rx="5" ry="3.5" fill="#4A3728"/>
-            </g>
+            <g class="mouth"><ellipse cx="50" cy="61" rx="5" ry="3.5" fill="#4A3728"/></g>
             <g class="leaf">
                 <ellipse cx="50" cy="67" rx="7" ry="3.5" fill="#7CB342" transform="rotate(-15 50 67)"/>
                 <path d="M 45 65 Q 50 69 55 65" stroke="#558B2F" stroke-width="1.5" fill="none"/>
@@ -2013,7 +1687,6 @@
         <div class="splash-progress"></div>
     </div>
 
-    <!-- INSTALL GATE (blokir dashboard jika belum install) -->
     <div id="install-gate">
         <img class="gate-icon" 
              src="https://drive.google.com/thumbnail?id=10kGraJ1xLm9g2BMGAIWemhfhen34cC70&sz=w300" 
@@ -2025,7 +1698,6 @@
         <div class="gate-note" id="gate-note">Gunakan menu browser untuk menambahkan ke layar utama.</div>
     </div>
 
-    <!-- iOS INSTALL INSTRUCTION MODAL -->
     <div id="ios-install-modal">
         <div class="ios-modal-card">
             <img class="ios-modal-icon"
@@ -2057,13 +1729,9 @@
             <div class="carousel-background" id="carousel-background"></div>
             <div class="carousel-slides" id="carousel-slides"></div>
             <div class="carousel-controls">
-                <button class="carousel-btn" id="prev-btn">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
+                <button class="carousel-btn" id="prev-btn"><i class="fas fa-chevron-left"></i></button>
                 <div class="carousel-indicators" id="carousel-indicators"></div>
-                <button class="carousel-btn" id="next-btn">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
+                <button class="carousel-btn" id="next-btn"><i class="fas fa-chevron-right"></i></button>
             </div>
         </div>
        
@@ -2106,18 +1774,10 @@
                         <ellipse cx="68" cy="45" rx="5" ry="3.5" fill="#FFB6B6" opacity="0.8"/>
                         <ellipse cx="50" cy="58" rx="6" ry="4" fill="#4A3728"/>
                         <ellipse cx="50" cy="59" rx="3" ry="2" fill="#FF6B6B"/>
-                        <g class="arm-left">
-                            <ellipse cx="20" cy="60" rx="6" ry="8" fill="#A0825F" transform="rotate(-30 20 60)"/>
-                        </g>
-                        <g class="arm-right">
-                            <ellipse cx="80" cy="60" rx="6" ry="8" fill="#A0825F" transform="rotate(30 80 60)"/>
-                        </g>
-                        <g class="foot-left">
-                            <ellipse cx="35" cy="92" rx="8" ry="6" fill="#8B6F47"/>
-                        </g>
-                        <g class="foot-right">
-                            <ellipse cx="65" cy="92" rx="8" ry="6" fill="#8B6F47"/>
-                        </g>
+                        <g class="arm-left"><ellipse cx="20" cy="60" rx="6" ry="8" fill="#A0825F" transform="rotate(-30 20 60)"/></g>
+                        <g class="arm-right"><ellipse cx="80" cy="60" rx="6" ry="8" fill="#A0825F" transform="rotate(30 80 60)"/></g>
+                        <g class="foot-left"><ellipse cx="35" cy="92" rx="8" ry="6" fill="#8B6F47"/></g>
+                        <g class="foot-right"><ellipse cx="65" cy="92" rx="8" ry="6" fill="#8B6F47"/></g>
                     </svg>
                 </div>
                 
@@ -2203,9 +1863,7 @@
                         <path d="M 56 35 Q 59 30 62 35" stroke="#2C1810" stroke-width="2.5" fill="none" stroke-linecap="round"/>
                         <ellipse cx="32" cy="45" rx="5" ry="3.5" fill="#FFB6B6" opacity="0.8"/>
                         <ellipse cx="68" cy="45" rx="5" ry="3.5" fill="#FFB6B6" opacity="0.8"/>
-                        <g class="mulut-makan">
-                            <ellipse cx="50" cy="58" rx="6" ry="4" fill="#4A3728"/>
-                        </g>
+                        <g class="mulut-makan"><ellipse cx="50" cy="58" rx="6" ry="4" fill="#4A3728"/></g>
                         <g class="daun-makan">
                             <ellipse cx="50" cy="64" rx="8" ry="4" fill="#7CB342" transform="rotate(-15 50 64)"/>
                             <path d="M 44 62 Q 50 66 56 62" stroke="#558B2F" stroke-width="1.5" fill="none"/>
@@ -2255,45 +1913,31 @@
 
     <div class="password-popup" id="password-popup">
         <div class="password-container">
-            <button class="close-popup" id="close-popup">
-                <i class="fas fa-times"></i>
-            </button>
-            
+            <button class="close-popup" id="close-popup"><i class="fas fa-times"></i></button>
             <div class="password-content">
                 <div class="password-header">
-                    <div class="password-icon">
-                        <i class="fas fa-lock"></i>
-                    </div>
+                    <div class="password-icon"><i class="fas fa-lock"></i></div>
                     <h3>Akses Terproteksi</h3>
                     <p>Masukkan kunci sandi untuk mengakses halaman pencairan</p>
                 </div>
-                
                 <form class="password-form" id="password-form">
                     <div class="form-group">
                         <label for="username"><i class="fas fa-user"></i> Kunci Sandi:</label>
                         <input type="text" id="username" name="username" placeholder="Masukkan kunci sandi" required>
                     </div>
-                    
                     <div class="form-group">
                         <label for="password"><i class="fas fa-key"></i> Password:</label>
                         <input type="password" id="password" name="password" placeholder="Masukkan password" required>
                     </div>
-                    
                     <div class="password-message password-error" id="password-error">
                         <i class="fas fa-exclamation-triangle"></i> Kunci sandi atau password salah!
                     </div>
-                    
                     <div class="password-message password-success" id="password-success">
                         <i class="fas fa-check-circle"></i> Berhasil! Mengarahkan ke halaman pencairan...
                     </div>
-                    
                     <div class="password-actions">
-                        <button type="submit" class="password-submit">
-                            <i class="fas fa-unlock-alt"></i> Masuk
-                        </button>
-                        <button type="button" class="password-cancel" id="cancel-popup">
-                            <i class="fas fa-times"></i> Batal
-                        </button>
+                        <button type="submit" class="password-submit"><i class="fas fa-unlock-alt"></i> Masuk</button>
+                        <button type="button" class="password-cancel" id="cancel-popup"><i class="fas fa-times"></i> Batal</button>
                     </div>
                 </form>
             </div>
@@ -2301,9 +1945,6 @@
     </div>
 
     <script>
-        /* ============================================ */
-        /* PWA: DETEKSI INSTALLED vs BROWSER + GATE */
-        /* ============================================ */
         const isStandalone = 
             window.matchMedia('(display-mode: standalone)').matches ||
             window.navigator.standalone === true ||
@@ -2316,12 +1957,10 @@
 
         const iosModal = document.getElementById('ios-install-modal');
         const iosModalClose = document.getElementById('ios-modal-close');
-
         const installGate = document.getElementById('install-gate');
         const gateInstallBtn = document.getElementById('gate-install-btn');
         const gateNote = document.getElementById('gate-note');
 
-        /* Aktifkan gate jika BELUM standalone */
         function activateGate() {
             if (isStandalone) return;
             document.body.classList.add('gate-active');
@@ -2340,59 +1979,37 @@
             installGate.classList.remove('show');
         }
 
-        /* Cek saat load */
-        if (isStandalone) {
-            deactivateGate();
-        } else {
-            activateGate();
-        }
+        if (isStandalone) deactivateGate();
+        else activateGate();
 
-        /* beforeinstallprompt (Chrome/Edge/Android) */
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
         });
 
-        /* appinstalled */
         window.addEventListener('appinstalled', () => {
             deferredPrompt = null;
             deactivateGate();
         });
 
-        /* Tombol Install di gate */
         gateInstallBtn.addEventListener('click', async () => {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 try {
                     const choice = await deferredPrompt.userChoice;
-                    if (choice.outcome === 'accepted') {
-                        deactivateGate();
-                    }
-                } catch (err) {
-                    console.warn('Install prompt error:', err);
-                }
+                    if (choice.outcome === 'accepted') deactivateGate();
+                } catch (err) { console.warn('Install prompt error:', err); }
                 deferredPrompt = null;
-            } else if (isIOS || isSafari) {
-                iosModal.classList.add('active');
             } else {
                 iosModal.classList.add('active');
             }
         });
 
-        /* Modal iOS close */
-        iosModalClose.addEventListener('click', () => {
-            iosModal.classList.remove('active');
-        });
-
+        iosModalClose.addEventListener('click', () => iosModal.classList.remove('active'));
         iosModal.addEventListener('click', (e) => {
-            if (e.target === iosModal) {
-                iosModal.classList.remove('active');
-            }
+            if (e.target === iosModal) iosModal.classList.remove('active');
         });
 
-        /* ============================================ */
-        /* PWA MANIFEST INLINE */
-        /* ============================================ */
         (function() {
             const iconUrl = "https://drive.google.com/thumbnail?id=10kGraJ1xLm9g2BMGAIWemhfhen34cC70&sz=w300";
             const manifest = {
@@ -2418,7 +2035,6 @@
             document.getElementById('pwa-manifest').setAttribute('href', manifestUrl);
         })();
 
-        /* PWA SERVICE WORKER INLINE */
         if ('serviceWorker' in navigator) {
             const swCode = `
                 const CACHE_NAME = 'arisanku-cache-v1';
@@ -2465,7 +2081,6 @@
             });
         }
 
-        /* SPLASH HIDE — cepat, maks ~1.2 detik */
         function hideSplash() {
             const splash = document.getElementById('pwa-splash');
             if (splash && !splash.classList.contains('hide')) {
@@ -2476,7 +2091,6 @@
         window.addEventListener('load', () => setTimeout(hideSplash, 500));
         setTimeout(hideSplash, 1200);
 
-        /* APLIKASI */
         const photos = [
             "https://drive.google.com/thumbnail?id=1jCDl9udYFooheT9LpI_-yOwnVwxTfdkn&sz=w1000",
             "https://drive.google.com/thumbnail?id=1njn1ENT1eiRLrrWZX3iS8lkqvfYFZAV0&sz=w1000",
@@ -2616,13 +2230,8 @@
             updateBackground(currentImg.src);
         }
 
-        function nextSlide() {
-            goToSlide((currentSlide + 1) % photos.length);
-        }
-
-        function prevSlide() {
-            goToSlide((currentSlide - 1 + photos.length) % photos.length);
-        }
+        function nextSlide() { goToSlide((currentSlide + 1) % photos.length); }
+        function prevSlide() { goToSlide((currentSlide - 1 + photos.length) % photos.length); }
 
         prevBtn.addEventListener('click', prevSlide);
         nextBtn.addEventListener('click', nextSlide);
@@ -2639,26 +2248,42 @@
             else if (e.key === 'Escape' && passwordPopup.classList.contains('active')) hidePasswordPopup();
         });
 
+        // ============================================
+        // KONFIGURASI
+        // ============================================
         const spreadsheetId = '1rdH1RF8b_YEsNZ4HUud_mR29I2q6YN6NAQUABzXaQd8';
         const sheetName = 'Report';
         const range = 'A1:G13';
         const csvUrl = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}&range=${encodeURIComponent(range)}`;
-        const MERGE_COLUMN_NAME = 'TOTAL CAIR';
         
+        const MERGE_COLUMN_NAME = 'TOTAL CAIR';
+        const GROUP_SIZE = 3; // Total per 3 bulan
+
+        // ============================================
+        // LOAD DATA & RENDER TABEL
+        // ============================================
         async function loadSpreadsheetData() {
             const container = document.getElementById('spreadsheet-data');
+            
             try {
                 const response = await fetch(csvUrl);
-                if (!response.ok) throw new Error(`Gagal mengambil data: ${response.status} ${response.statusText}`);
+                if (!response.ok) {
+                    throw new Error(`Gagal mengambil data: ${response.status} ${response.statusText}`);
+                }
+                
                 const csvText = await response.text();
                 const rows = parseCSV(csvText);
+                
                 if (rows.length === 0) {
                     container.innerHTML = '<div class="error">Data kosong</div>';
                     return;
                 }
+                
                 const table = document.createElement('table');
                 const headers = rows[0];
                 const totalCols = headers.length;
+                
+                // Cari index kolom "TOTAL CAIR"
                 let totalCairIndex = -1;
                 for (let c = 0; c < totalCols; c++) {
                     if ((headers[c] || '').toUpperCase().trim() === MERGE_COLUMN_NAME) {
@@ -2666,50 +2291,167 @@
                         break;
                     }
                 }
+                
+                // Cari index kolom angka yang akan dijumlahkan
+                // Asumsi: kolom angka adalah kolom ke-3 sampai terakhir (index 2+), kecuali kolom total cair
+                const numericColumns = [];
+                for (let c = 2; c < totalCols; c++) {
+                    if (c !== totalCairIndex) {
+                        numericColumns.push(c);
+                    }
+                }
+                
+                console.log('Headers:', headers);
+                console.log('Total Cair Index:', totalCairIndex);
+                console.log('Numeric Columns:', numericColumns);
+                
+                // ============================================
+                // BUAT THEAD
+                // ============================================
                 const thead = document.createElement('thead');
                 const headerRow = document.createElement('tr');
+                
                 headers.forEach((cell) => {
                     const th = document.createElement('th');
                     th.textContent = cell;
                     headerRow.appendChild(th);
                 });
+                
                 thead.appendChild(headerRow);
                 table.appendChild(thead);
                 
+                // ============================================
+                // BUAT TBODY dengan SUM per 3 baris
+                // ============================================
                 const tbody = document.createElement('tbody');
                 const dataRows = rows.slice(1);
                 const totalDataRows = dataRows.length;
-                const skippedCells = new Set();
+                
+                // Hitung total per 3 baris
+                const groupTotals = {}; // { groupStartIdx: totalValue }
+                
+                if (totalCairIndex !== -1) {
+                    for (let r = 0; r < totalDataRows; r += GROUP_SIZE) {
+                        let sum = 0;
+                        const groupEnd = Math.min(r + GROUP_SIZE, totalDataRows);
+                        
+                        for (let g = r; g < groupEnd; g++) {
+                            const rowData = dataRows[g];
+                            // Jumlahkan semua nilai angka di baris ini (kolom numericColumns)
+                            numericColumns.forEach(c => {
+                                const val = parseNumber(rowData[c]);
+                                sum += val;
+                            });
+                        }
+                        
+                        groupTotals[r] = sum;
+                    }
+                }
+                
+                // Render baris
+                const skippedCells = new Set(); // format: "rowIdx-colIdx"
                 
                 for (let r = 0; r < totalDataRows; r++) {
                     const rowData = dataRows[r];
                     const row = document.createElement('tr');
+                    
+                    // Apakah baris ini awal group?
+                    const isGroupStart = (r % GROUP_SIZE === 0);
+                    const groupSizeActual = Math.min(GROUP_SIZE, totalDataRows - r);
+                    
                     for (let c = 0; c < totalCols; c++) {
-                        if (skippedCells.has(`${r}-${c}`)) continue;
-                        const td = document.createElement('td');
-                        const cellValue = (rowData[c] || '').trim();
-                        if (c === totalCairIndex && totalCairIndex !== -1) {
-                            const nextRowIdx = r + 1;
-                            if (nextRowIdx < totalDataRows) {
-                                td.rowSpan = 2;
-                                td.setAttribute('data-merged', 'true');
-                                skippedCells.add(`${nextRowIdx}-${c}`);
-                            }
-                            td.textContent = cellValue;
-                        } else {
-                            td.textContent = cellValue;
+                        // Cek apakah sel ini sudah di-merge
+                        if (skippedCells.has(`${r}-${c}`)) {
+                            continue;
                         }
+                        
+                        const td = document.createElement('td');
+                        
+                        // ============================================
+                        // KOLOM TOTAL CAIR - ISI SUM & MERGE
+                        // ============================================
+                        if (c === totalCairIndex && totalCairIndex !== -1) {
+                            if (isGroupStart) {
+                                // Baris pertama group → tampilkan total sum
+                                const total = groupTotals[r] || 0;
+                                td.textContent = formatNumber(total);
+                                td.rowSpan = groupSizeActual;
+                                td.setAttribute('data-merged', 'true');
+                                
+                                // Tandai baris selanjutnya sudah di-skip
+                                for (let g = r + 1; g < r + groupSizeActual; g++) {
+                                    skippedCells.add(`${g}-${c}`);
+                                }
+                            }
+                            // Jika bukan group start, td tidak dibuat (sudah di-skip di atas)
+                            else {
+                                continue;
+                            }
+                        } else {
+                            // Kolom lain: tampilkan nilai asli
+                            td.textContent = (rowData[c] || '').trim();
+                        }
+                        
                         row.appendChild(td);
                     }
+                    
                     tbody.appendChild(row);
                 }
+                
                 table.appendChild(tbody);
                 container.innerHTML = '';
                 container.appendChild(table);
+                
             } catch (error) {
                 console.error('Error:', error);
                 container.innerHTML = `<div class="error">Terjadi kesalahan: ${error.message}</div>`;
             }
+        }
+        
+        // Parse angka dari string (handle format Indonesia & internasional)
+        function parseNumber(str) {
+            if (!str) return 0;
+            // Hapus semua karakter kecuali digit, titik, koma, minus
+            let cleaned = String(str).replace(/[^\d.,-]/g, '');
+            
+            // Deteksi format:
+            // - Jika ada titik DAN koma: titik = ribuan, koma = desimal
+            // - Jika hanya titik: cek apakah titik sebagai ribuan atau desimal
+            // - Jika hanya koma: koma = desimal (atau ribuan jika 3 digit)
+            
+            if (cleaned.includes('.') && cleaned.includes(',')) {
+                // Format: 1.234,56 → 1234.56
+                cleaned = cleaned.replace(/\./g, '').replace(',', '.');
+            } else if (cleaned.includes(',')) {
+                // Format: 1234,56 atau 1,234
+                const parts = cleaned.split(',');
+                if (parts.length === 2 && parts[1].length <= 2) {
+                    // Desimal
+                    cleaned = cleaned.replace(',', '.');
+                } else {
+                    // Ribuan
+                    cleaned = cleaned.replace(/,/g, '');
+                }
+            } else if (cleaned.includes('.')) {
+                // Format: 1.234 atau 1234.56
+                const parts = cleaned.split('.');
+                if (parts.length === 2 && parts[1].length <= 2) {
+                    // Desimal → biarkan
+                } else {
+                    // Ribuan
+                    cleaned = cleaned.replace(/\./g, '');
+                }
+            }
+            
+            const num = parseFloat(cleaned);
+            return isNaN(num) ? 0 : num;
+        }
+        
+        // Format angka ke format Indonesia dengan pemisah ribuan
+        function formatNumber(num) {
+            if (num === 0) return '0';
+            // Format: 1.234.567
+            return num.toLocaleString('id-ID');
         }
         
         function parseCSV(csvText) {
@@ -2717,17 +2459,30 @@
             let currentRow = [];
             let currentCell = '';
             let insideQuotes = false;
+            
             for (let i = 0; i < csvText.length; i++) {
                 const char = csvText[i];
-                if (char === '"') insideQuotes = !insideQuotes;
-                else if (char === ',' && !insideQuotes) { currentRow.push(currentCell); currentCell = ''; }
-                else if (char === '\n' && !insideQuotes) { currentRow.push(currentCell); rows.push(currentRow); currentRow = []; currentCell = ''; }
-                else currentCell += char;
+                
+                if (char === '"') {
+                    insideQuotes = !insideQuotes;
+                } else if (char === ',' && !insideQuotes) {
+                    currentRow.push(currentCell);
+                    currentCell = '';
+                } else if (char === '\n' && !insideQuotes) {
+                    currentRow.push(currentCell);
+                    rows.push(currentRow);
+                    currentRow = [];
+                    currentCell = '';
+                } else {
+                    currentCell += char;
+                }
             }
+            
             if (currentCell !== '' || currentRow.length > 0) {
                 currentRow.push(currentCell);
                 rows.push(currentRow);
             }
+            
             return rows;
         }
         
