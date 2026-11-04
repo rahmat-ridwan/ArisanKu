@@ -2256,7 +2256,8 @@
         const range = 'A1:G13';
         const csvUrl = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}&range=${encodeURIComponent(range)}`;
         
-        const MERGE_COLUMN_NAME = 'TOTAL CAIR';
+        const MERGE_COLUMN_NAME = 'TOTAL CAIR'; // Kolom yang ditampilkan hasil sum & di-merge
+        const SUM_COLUMN_NAME = 'TOTAL'; // Kolom yang dijumlahkan (sumber nilai)
         const GROUP_SIZE = 3; // Total per 3 bulan
 
         // ============================================
@@ -2283,27 +2284,25 @@
                 const headers = rows[0];
                 const totalCols = headers.length;
                 
-                // Cari index kolom "TOTAL CAIR"
+                // Cari index kolom "TOTAL CAIR" (untuk display & merge)
                 let totalCairIndex = -1;
-                for (let c = 0; c < totalCols; c++) {
-                    if ((headers[c] || '').toUpperCase().trim() === MERGE_COLUMN_NAME) {
-                        totalCairIndex = c;
-                        break;
-                    }
-                }
+                // Cari index kolom "TOTAL" (sumber nilai yang dijumlahkan)
+                let totalIndex = -1;
                 
-                // Cari index kolom angka yang akan dijumlahkan
-                // Asumsi: kolom angka adalah kolom ke-3 sampai terakhir (index 2+), kecuali kolom total cair
-                const numericColumns = [];
-                for (let c = 2; c < totalCols; c++) {
-                    if (c !== totalCairIndex) {
-                        numericColumns.push(c);
+                for (let c = 0; c < totalCols; c++) {
+                    const headerText = (headers[c] || '').toUpperCase().trim();
+                    if (headerText === MERGE_COLUMN_NAME) {
+                        totalCairIndex = c;
+                    }
+                    // Cari "TOTAL" tapi BUKAN "TOTAL CAIR"
+                    if (headerText === SUM_COLUMN_NAME) {
+                        totalIndex = c;
                     }
                 }
                 
                 console.log('Headers:', headers);
                 console.log('Total Cair Index:', totalCairIndex);
-                console.log('Numeric Columns:', numericColumns);
+                console.log('Total (sumber sum) Index:', totalIndex);
                 
                 // ============================================
                 // BUAT THEAD
@@ -2321,27 +2320,25 @@
                 table.appendChild(thead);
                 
                 // ============================================
-                // BUAT TBODY dengan SUM per 3 baris
+                // BUAT TBODY dengan SUM per 3 baris dari kolom "TOTAL"
                 // ============================================
                 const tbody = document.createElement('tbody');
                 const dataRows = rows.slice(1);
                 const totalDataRows = dataRows.length;
                 
-                // Hitung total per 3 baris
-                const groupTotals = {}; // { groupStartIdx: totalValue }
+                // Hitung total per 3 baris HANYA dari kolom "TOTAL"
+                const groupTotals = {};
                 
-                if (totalCairIndex !== -1) {
+                if (totalCairIndex !== -1 && totalIndex !== -1) {
                     for (let r = 0; r < totalDataRows; r += GROUP_SIZE) {
                         let sum = 0;
                         const groupEnd = Math.min(r + GROUP_SIZE, totalDataRows);
                         
                         for (let g = r; g < groupEnd; g++) {
                             const rowData = dataRows[g];
-                            // Jumlahkan semua nilai angka di baris ini (kolom numericColumns)
-                            numericColumns.forEach(c => {
-                                const val = parseNumber(rowData[c]);
-                                sum += val;
-                            });
+                            // HANYA jumlahkan nilai dari kolom "TOTAL"
+                            const val = parseNumber(rowData[totalIndex]);
+                            sum += val;
                         }
                         
                         groupTotals[r] = sum;
@@ -2349,18 +2346,16 @@
                 }
                 
                 // Render baris
-                const skippedCells = new Set(); // format: "rowIdx-colIdx"
+                const skippedCells = new Set();
                 
                 for (let r = 0; r < totalDataRows; r++) {
                     const rowData = dataRows[r];
                     const row = document.createElement('tr');
                     
-                    // Apakah baris ini awal group?
                     const isGroupStart = (r % GROUP_SIZE === 0);
                     const groupSizeActual = Math.min(GROUP_SIZE, totalDataRows - r);
                     
                     for (let c = 0; c < totalCols; c++) {
-                        // Cek apakah sel ini sudah di-merge
                         if (skippedCells.has(`${r}-${c}`)) {
                             continue;
                         }
@@ -2372,23 +2367,18 @@
                         // ============================================
                         if (c === totalCairIndex && totalCairIndex !== -1) {
                             if (isGroupStart) {
-                                // Baris pertama group → tampilkan total sum
                                 const total = groupTotals[r] || 0;
                                 td.textContent = formatNumber(total);
                                 td.rowSpan = groupSizeActual;
                                 td.setAttribute('data-merged', 'true');
                                 
-                                // Tandai baris selanjutnya sudah di-skip
                                 for (let g = r + 1; g < r + groupSizeActual; g++) {
                                     skippedCells.add(`${g}-${c}`);
                                 }
-                            }
-                            // Jika bukan group start, td tidak dibuat (sudah di-skip di atas)
-                            else {
+                            } else {
                                 continue;
                             }
                         } else {
-                            // Kolom lain: tampilkan nilai asli
                             td.textContent = (rowData[c] || '').trim();
                         }
                         
@@ -2408,37 +2398,25 @@
             }
         }
         
-        // Parse angka dari string (handle format Indonesia & internasional)
+        // Parse angka dari string
         function parseNumber(str) {
             if (!str) return 0;
-            // Hapus semua karakter kecuali digit, titik, koma, minus
             let cleaned = String(str).replace(/[^\d.,-]/g, '');
             
-            // Deteksi format:
-            // - Jika ada titik DAN koma: titik = ribuan, koma = desimal
-            // - Jika hanya titik: cek apakah titik sebagai ribuan atau desimal
-            // - Jika hanya koma: koma = desimal (atau ribuan jika 3 digit)
-            
             if (cleaned.includes('.') && cleaned.includes(',')) {
-                // Format: 1.234,56 → 1234.56
                 cleaned = cleaned.replace(/\./g, '').replace(',', '.');
             } else if (cleaned.includes(',')) {
-                // Format: 1234,56 atau 1,234
                 const parts = cleaned.split(',');
                 if (parts.length === 2 && parts[1].length <= 2) {
-                    // Desimal
                     cleaned = cleaned.replace(',', '.');
                 } else {
-                    // Ribuan
                     cleaned = cleaned.replace(/,/g, '');
                 }
             } else if (cleaned.includes('.')) {
-                // Format: 1.234 atau 1234.56
                 const parts = cleaned.split('.');
                 if (parts.length === 2 && parts[1].length <= 2) {
-                    // Desimal → biarkan
+                    // Desimal
                 } else {
-                    // Ribuan
                     cleaned = cleaned.replace(/\./g, '');
                 }
             }
@@ -2447,10 +2425,8 @@
             return isNaN(num) ? 0 : num;
         }
         
-        // Format angka ke format Indonesia dengan pemisah ribuan
         function formatNumber(num) {
             if (num === 0) return '0';
-            // Format: 1.234.567
             return num.toLocaleString('id-ID');
         }
         
